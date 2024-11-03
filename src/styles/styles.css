@@ -12,11 +12,11 @@ html {
   }
   
   h2 {
-    @apply text-2xl text-blue-500 my-5;
+    @apply text-2xl text-slate-300 my-5;
   }
   
   h3 {
-    @apply text-xl text-white my-5;
+    @apply text-xl text-slate-300 my-5;
   }
   
   p {
@@ -25,5 +25,9 @@ html {
   
   a {
     @apply text-blue-500 hover:underline;
+  }
+
+  li {
+    @apply list-disc ml-5 pl-2 italic
   }
   

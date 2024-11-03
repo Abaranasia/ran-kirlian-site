@@ -1,0 +1,17 @@
+---
+type Track = {
+  title: string;
+  length: string;
+};
+
+const { tracks } = Astro.props;
+---
+<h2 class="my-5">Tracklist</h2>
+{
+  tracks.map((track: Track) => (
+    <div class="grid grid-cols-2 grid-flow-row-dense">
+      <div>{track.title}</div>
+      <div>{track.length}</div>
+    </div>
+  ))
+}

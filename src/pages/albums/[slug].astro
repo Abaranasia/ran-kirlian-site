@@ -1,0 +1,62 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import MainLayout from "@layouts/MainLayout.astro";
+import Tracks from "@components/Tracks.astro";
+
+ export const getStaticPaths = (async () => {
+    const albums = await getCollection('albums')
+    return albums.map((album) => (
+        {
+            params: { slug: album.slug},
+            props: { album: album}
+        }
+    ))
+}) satisfies GetStaticPaths;
+const { album }= Astro.props;
+console.log('albums :>> ', album);
+const frontmatter = album.data;
+
+const { Content, headings} = await album.render(); 
+//const author = await getEntry('author', post.data.author.id);
+
+---
+<MainLayout title={frontmatter.title}>
+    <h1 class="text-3xl text-white pt-10">{frontmatter.title}</h1>
+    <div  class="grid grid-cols-1 gap-8 mt-5 md:mt-5 md:grid-cols-2">
+        <Image
+            class=" rounded-md my-5"
+            src={frontmatter.image}
+            alt={frontmatter.title}
+            width={600}
+            height={600}
+            quality="high"
+            loading="lazy"
+        />  
+        <div>
+            
+            <Tracks tracks={frontmatter.tracks}/>
+            <p class="text-right mt-10">Complete set: {frontmatter.duration}</p>
+        </div>
+    </div>
+    
+    <!-- Table of contents -->
+<!--     <h3>Tabla de contenidos</h3>
+    <ol>
+        {
+            headings.map((heading, index) => (
+                <li>
+                    <a href={`#${heading.slug}`}>{index+1} - {heading.text}</a>
+                </li>
+            ))
+        }
+    </ol> -->
+
+    <!-- Album Contents -->
+     <Content /> 
+
+    <div class="my-20">
+        <a href="#back-btn">Ir arriba</a>
+    </div>
+</BlogCollectionLayout>

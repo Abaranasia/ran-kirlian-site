@@ -9,7 +9,7 @@ const { tracks } = Astro.props;
 <h2 class="my-5">Tracklist</h2>
 {
   tracks.map((track: Track) => (
-    <div class="grid grid-cols-2 grid-flow-row-dense">
+    <div class="grid grid-cols-1 grid-flow-col-dense">
       <div>{track.title}</div>
       <div>{track.length}</div>
     </div>

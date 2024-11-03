@@ -1,16 +1,24 @@
 ---
+import { getCollection } from "astro:content";
+import Album from "@components/Album.astro";
+import MainLayout from "@layouts/MainLayout.astro";
+import { siteConfig } from "src/config/site-config";
+
+const albums = await getCollection('albums')
 
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout title="Ran Kirlian official website">
+  <h1 class="text-3xl font-semibold capitalize lg:text-4xl text-white">
+    {siteConfig.title}
+  </h1>
+
+	<div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-3">
+        {
+          albums.sort().map((album) => (
+            <Album album= {album} />
+          ))
+        } 
+      </div> 
+</MainLayout>
+

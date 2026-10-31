@@ -8,10 +8,8 @@ import '../styles/styles.css';
 interface Props {
     title?: string;
     description?: string;
-    // Wider content area for grid-heavy pages such as release listings.
-    wide?: boolean;
 }
-const { title, description = siteConfig.description, wide = false } = Astro.props;
+const { title, description = siteConfig.description } = Astro.props;
 ---
 <html lang="en">
 <head>
@@ -28,7 +26,7 @@ const { title, description = siteConfig.description, wide = false } = Astro.prop
     >
         Skip to content
     </a>
-    <div class:list={["m-auto text-white p-2", wide ? "max-w-7xl" : "max-w-5xl"]}>
+    <div class="max-w-7xl m-auto text-white p-2">
         <SiteHeader />
         <main id="content" tabindex="-1" class="mb-10">
             <slot />

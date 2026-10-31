@@ -12,7 +12,8 @@ export const mainNavigation = (bandcampUrl: string): NavItem[] => [
     { label: "News", href: "/news" },
     { label: "Reviews", href: "/reviews" },
     { label: "About", href: "/about" },
-    { label: "Contact", href: "/contact" },
+    // Same-page anchor: every page has the contact section in its footer.
+    { label: "Contact", href: "#contact" },
     { label: "Purchase", href: bandcampUrl, external: true },
 ];
 

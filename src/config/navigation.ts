@@ -8,10 +8,10 @@ export interface NavItem {
 
 // Ordered as shown in the main navigation. The purchase link comes from the profile collection.
 export const mainNavigation = (bandcampUrl: string): NavItem[] => [
-    { label: "Releases", href: "/releases", activePrefixes: ["/albums/"] },
-    { label: "News", href: "/news" },
-    { label: "Reviews", href: "/reviews" },
-    { label: "About", href: "/about" },
+    { label: "Releases", href: "/releases/", activePrefixes: ["/albums/"] },
+    { label: "News", href: "/news/" },
+    { label: "Reviews", href: "/reviews/" },
+    { label: "About", href: "/about/" },
     // Same-page anchor: every page has the contact section in its footer.
     { label: "Contact", href: "#contact" },
     { label: "Purchase", href: bandcampUrl, external: true },
@@ -23,7 +23,8 @@ const withoutTrailingSlash = (path: string) =>
 export const isActiveNavItem = (item: NavItem, pathname: string): boolean => {
     if (item.external) return false;
     const current = withoutTrailingSlash(pathname);
-    if (current === item.href) return true;
-    if (item.href !== "/" && current.startsWith(`${item.href}/`)) return true;
+    const href = withoutTrailingSlash(item.href);
+    if (current === href) return true;
+    if (href !== "/" && current.startsWith(`${href}/`)) return true;
     return (item.activePrefixes ?? []).some((prefix) => current.startsWith(prefix));
 };

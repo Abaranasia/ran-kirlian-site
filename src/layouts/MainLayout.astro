@@ -3,20 +3,20 @@ import { ClientRouter } from 'astro:transitions';
 import { siteConfig } from '@config/site-config';
 import SiteHeader from '@components/SiteHeader.astro';
 import SiteFooter from '@components/SiteFooter.astro';
+import SeoHead, { type Props as SeoProps } from '@components/SeoHead.astro';
 import '../styles/styles.css';
 
-interface Props {
+type Props = Omit<SeoProps, 'title' | 'description'> & {
     title?: string;
     description?: string;
-}
-const { title, description = siteConfig.description } = Astro.props;
+};
+const { title = siteConfig.title, description = siteConfig.description, ...seo } = Astro.props;
 ---
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content={description}>
-    <title>{title}</title>
+    <SeoHead title={title} description={description} {...seo} />
     <ClientRouter />
 </head>
 <body class="bg-gray-900">

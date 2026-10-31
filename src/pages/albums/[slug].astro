@@ -5,6 +5,8 @@ import { Image } from "astro:assets";
 import { displayTitle } from "@utils/releases";
 import { formatDate } from "@utils/dates";
 import { sortReviewsByDate } from "@utils/reviews";
+import { toOgImage } from "@utils/og-image";
+import { albumDescription, albumJsonLd, breadcrumbJsonLd } from "@utils/seo";
 import MainLayout from "@layouts/MainLayout.astro";
 import Tracks from "@components/Tracks.astro";
 import ReviewItem from "@components/ReviewItem.astro";
@@ -37,10 +39,34 @@ const reviews = sortReviewsByDate(
     await getCollection("reviews", (review) => review.data.album.id === album.id)
 );
 
+const site = Astro.site!;
+const { pathname } = Astro.url;
+const jsonLd = [
+    albumJsonLd({
+        album,
+        path: pathname,
+        site,
+        imageUrl: (await toOgImage(frontmatter.image, site)).url,
+        reviews,
+    }),
+    breadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Releases", path: "/releases/" },
+        { name: title, path: pathname },
+    ], site),
+];
+
 ---
-<MainLayout title={`${title} | Ran Kirlian`} description={`${title} (${frontmatter.year}) by ${frontmatter.author}: tracklist, credits, reviews and where to listen.`}>
+<MainLayout
+    title={`${title} | Ran Kirlian`}
+    description={albumDescription(album)}
+    image={frontmatter.image}
+    imageAlt={`Cover of ${title} by ${frontmatter.author}`}
+    type="music.album"
+    jsonLd={jsonLd}
+>
     <h1 class="text-3xl text-white pt-5">{title}</h1>
-    <a href="/releases">Back</a>
+    <a href="/releases/">Back</a>
     <div  class="grid grid-cols-1 gap-8 mt-5 md:mt-5 md:grid-cols-2">
         <Image
             class=" rounded-md my-5"

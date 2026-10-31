@@ -53,7 +53,7 @@ const { Content } = await render(item);
     <Content />
     {(album || data.link) && (
       <p class="flex flex-wrap gap-x-6 gap-y-2">
-        {album && <a href={`/albums/${album.id}`}>View {displayTitle(album)}</a>}
+        {album && <a href={`/albums/${album.id}/`}>View {displayTitle(album)}</a>}
         {data.link && (
           <a href={data.link} target="_blank" rel="noopener noreferrer">
             More information<span class="sr-only"> about {data.title} (external site)</span>

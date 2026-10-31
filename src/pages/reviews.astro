@@ -5,11 +5,14 @@ import ReviewItem from "@components/ReviewItem.astro";
 import { sortReviewsByDate } from "@utils/reviews";
 
 const reviews = sortReviewsByDate(await getCollection("reviews"));
+const publications = [...new Set(reviews.map((review) => review.data.publication))];
+const featuredPublications = new Intl.ListFormat("en", { type: "conjunction" }).format(publications.slice(0, 3));
+const description = `${reviews.length} press reviews of Ran Kirlian's ambient albums from ${publications.length} publications, including ${featuredPublications}.`;
 ---
 
 <MainLayout
   title="Reviews | Ran Kirlian"
-  description="Press reviews of Ran Kirlian's ambient albums."
+  description={description}
 >
   <h1>Reviews</h1>
 

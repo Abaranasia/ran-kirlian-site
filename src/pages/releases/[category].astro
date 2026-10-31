@@ -5,6 +5,7 @@ import ReleasesLayout from "@components/ReleasesLayout.astro";
 import MainLayout from "@layouts/MainLayout.astro";
 import { releaseCategories, type ReleaseCategory } from "@config/release-categories";
 import { sortByReleaseDate } from "@utils/releases";
+import { yearRange } from "@utils/seo";
 
 export const getStaticPaths = (() =>
   releaseCategories.map((category) => ({
@@ -20,9 +21,11 @@ const { category } = Astro.props;
 const albums = sortByReleaseDate(
   (await getCollection('albums')).filter(category.matches)
 );
+const releaseCount = `${albums.length} ${albums.length === 1 ? "release" : "releases"}`;
+const description = `${category.label} by ambient musician Ran Kirlian: ${releaseCount} from ${yearRange(albums)}, with tracklists, credits and reviews.`;
 ---
 
-<MainLayout title={`${category.label} | Ran Kirlian`}>
+<MainLayout title={`${category.label} | Ran Kirlian`} description={description}>
   <h1 class="text-3xl font-semibold lg:text-4xl text-white">
     {category.label}
   </h1>

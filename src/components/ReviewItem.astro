@@ -22,7 +22,7 @@ const { Content } = await render(review);
     <Heading class="mt-0 mb-2 text-white">
       {showAlbum ? (
         <>
-          <a href={`/albums/${data.album.id}`}>{albumTitle}</a>
+          <a href={`/albums/${data.album.id}/`}>{albumTitle}</a>
           <span class="text-slate-300"> reviewed by {data.publication}</span>
         </>
       ) : (

@@ -17,10 +17,10 @@ const frontmatter = album.data;
         height={400}
         quality="low"
         loading="lazy"
-        transition:name={`${album.slug}-image`}
+        transition:name={`${album.id}-image`}
       /> 
       <a
-      href={`/albums/${album.slug}`}
+      href={`/albums/${album.id}`}
         class="text-lg hover:underline text-white text-center my-3"
       >
         {frontmatter.title}

@@ -1,33 +1,36 @@
-html {
+@import "tailwindcss";
+
+@layer base {
+  html {
     @apply bg-gray-900 px-10;
     scroll-behavior: smooth;
   }
-  
+
   body {
     @apply mt-10;
   }
-  
+
   h1 {
     @apply text-3xl text-white my-5;
   }
-  
+
   h2 {
     @apply text-2xl text-slate-300 my-5;
   }
-  
+
   h3 {
     @apply text-xl text-slate-300 my-5;
   }
-  
+
   p {
     @apply text-white my-5;
   }
-  
+
   a {
     @apply text-blue-500 hover:underline;
   }
 
   li {
-    @apply list-disc ml-5 pl-2 italic
+    @apply list-disc ml-5 pl-2 italic;
   }
-  
+}

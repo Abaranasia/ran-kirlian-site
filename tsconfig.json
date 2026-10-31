@@ -15,6 +15,9 @@
       ],
       "@pages/*": [
         "./src/pages/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
       ]
     },
     "jsx": "preserve"

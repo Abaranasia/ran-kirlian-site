@@ -1,0 +1,51 @@
+---
+import { getSocialIcon } from "@config/social-icons";
+
+interface Props {
+  socials: { name: string; url: string }[];
+  email?: string;
+  class?: string;
+}
+
+const { socials, email, class: className } = Astro.props;
+
+// Generic envelope outline (24x24), not tied to any mail provider brand.
+const EMAIL_ICON_PATH = "M2 5h20v14H2V5zm2 2v.5l8 5 8-5V7H4zm16 2.85-8 5-8-5V17h16V9.85z";
+---
+<ul class:list={["flex flex-wrap items-center gap-x-6 gap-y-3", className]}>
+  {socials.map((social) => {
+    const icon = getSocialIcon(social.name);
+    return (
+      <li class="list-none ml-0 pl-0 not-italic">
+        <a
+          href={social.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={icon?.label ?? social.name}
+          class="inline-flex text-gray-300 transition-colors hover:text-white hover:no-underline"
+        >
+          {icon ? (
+            <svg class="size-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d={icon.path} />
+            </svg>
+          ) : (
+            social.name
+          )}
+        </a>
+      </li>
+    );
+  })}
+  {email && (
+    <li class="list-none ml-0 pl-0 not-italic">
+      <a
+        href={`mailto:${email}`}
+        aria-label={`Email ${email}`}
+        class="inline-flex text-gray-300 transition-colors hover:text-white hover:no-underline"
+      >
+        <svg class="size-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d={EMAIL_ICON_PATH} />
+        </svg>
+      </a>
+    </li>
+  )}
+</ul>

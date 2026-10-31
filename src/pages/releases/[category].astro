@@ -1,0 +1,31 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import ReleasesLayout from "@components/ReleasesLayout.astro";
+import MainLayout from "@layouts/MainLayout.astro";
+import { releaseCategories, type ReleaseCategory } from "@config/release-categories";
+import { sortByReleaseDate } from "@utils/releases";
+
+export const getStaticPaths = (() =>
+  releaseCategories.map((category) => ({
+    params: { category: category.slug },
+    props: { category },
+  }))) satisfies GetStaticPaths;
+
+interface Props {
+  category: ReleaseCategory;
+}
+
+const { category } = Astro.props;
+const albums = sortByReleaseDate(
+  (await getCollection('albums')).filter(category.matches)
+);
+---
+
+<MainLayout title={`${category.label} | Ran Kirlian`}>
+  <h1 class="text-3xl font-semibold lg:text-4xl text-white">
+    {category.label}
+  </h1>
+
+  <ReleasesLayout albums={albums} current={category.slug} />
+</MainLayout>

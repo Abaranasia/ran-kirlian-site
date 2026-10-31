@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from "astro:content";
+import AlbumGrid from "@components/AlbumGrid.astro";
+import ReleasesNav from "@components/ReleasesNav.astro";
+
+interface Props {
+  albums: CollectionEntry<"albums">[];
+  current?: string;
+}
+
+const { albums, current } = Astro.props;
+---
+<div class="mt-8 md:mt-16 md:grid md:grid-cols-[12rem_1fr] md:items-start gap-8">
+  <aside class="mb-8 md:mb-0 md:sticky md:top-6">
+    <ReleasesNav current={current} />
+  </aside>
+  <AlbumGrid albums={albums} />
+</div>

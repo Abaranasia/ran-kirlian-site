@@ -1,25 +1,38 @@
 ---
-import { getCollection } from "astro:content";
-import Album from "@components/Album.astro";
+import { getCollection, getEntry } from "astro:content";
 import MainLayout from "@layouts/MainLayout.astro";
+import HomeHero from "@components/home/HomeHero.astro";
+import FeaturedReleases from "@components/home/FeaturedReleases.astro";
+import LatestReleases from "@components/home/LatestReleases.astro";
+import LatestNews from "@components/home/LatestNews.astro";
 import { siteConfig } from "@config/site-config";
+import { homeLatestReleaseIds } from "@config/home";
+import { sortByReleaseDate } from "@utils/releases";
+import { sortNewsByDate } from "@utils/news";
 
-const albums = (await getCollection('albums')).sort(
-  (a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title)
-);
+const LATEST_NEWS_COUNT = 5;
 
+const profile = await getEntry("profile", "ran-kirlian");
+if (!profile) {
+  throw new Error('Missing profile entry "ran-kirlian" in src/content/profile.json');
+}
+const { name, tagline } = profile.data;
+
+const albums = sortByReleaseDate(await getCollection("albums"));
+const featured = albums.filter((album) => album.data.featured);
+const latestReleases = homeLatestReleaseIds.map((id) => {
+  const album = albums.find((entry) => entry.id === id);
+  if (!album) {
+    throw new Error(`Unknown album id "${id}" in src/config/home.ts`);
+  }
+  return album;
+});
+const latestNews = sortNewsByDate(await getCollection("news")).slice(0, LATEST_NEWS_COUNT);
 ---
 
-<MainLayout title="Ran Kirlian official website">
-  <h1 class="text-3xl font-semibold capitalize lg:text-4xl text-white">
-    {siteConfig.title}
-  </h1>
-
-	<div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-3">
-        {
-          albums.map((album) => (
-            <Album album= {album} />
-          ))
-        } 
-      </div> 
+<MainLayout title={`${name} | ${tagline}`} description={siteConfig.description}>
+  <HomeHero name={name} tagline={tagline} />
+  <FeaturedReleases albums={featured} />
+  <LatestReleases albums={latestReleases} />
+  <LatestNews items={latestNews} />
 </MainLayout>

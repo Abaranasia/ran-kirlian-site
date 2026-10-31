@@ -17,6 +17,9 @@ importers:
       astro:
         specifier: ^7.4.4
         version: 7.4.4(jiti@2.7.0)(yaml@2.9.1)
+      simple-icons:
+        specifier: ^16.36.0
+        version: 16.36.0
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
@@ -1426,6 +1429,10 @@ packages:
     resolution: {integrity: sha512-OcRW72ngQvc+MSVWBRIovC/BTW589iUE/Vxav7VeM4RcY9MUjqB+IR6ILG1k9nuW6LiG/nct9uma4/MBtnZbmQ==}
     engines: {node: '>=20'}
 
+  simple-icons@16.36.0:
+    resolution: {integrity: sha512-+VNPPkqSOLidFeSgBKUWX4n50WPpDC09hav+BgS26anIF1oQOlGBb8LvwGR+6fYRjo+B6CiKzNBceMPkSVXANQ==}
+    engines: {node: '>=0.12.18'}
+
   sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
 
@@ -2656,8 +2663,7 @@ snapshots:
 
   detect-libc@2.0.3: {}
 
-  detect-libc@2.1.2:
-    optional: true
+  detect-libc@2.1.2: {}
 
   devalue@6.0.3: {}
 
@@ -2892,7 +2898,7 @@ snapshots:
 
   lightningcss@1.33.0:
     dependencies:
-      detect-libc: 2.0.3
+      detect-libc: 2.1.2
     optionalDependencies:
       lightningcss-android-arm64: 1.33.0
       lightningcss-darwin-arm64: 1.33.0
@@ -3146,6 +3152,8 @@ snapshots:
       '@shikijs/types': 4.5.0
       '@shikijs/vscode-textmate': 10.1.0
       '@types/hast': 3.0.5
+
+  simple-icons@16.36.0: {}
 
   sisteransi@1.0.5: {}
 

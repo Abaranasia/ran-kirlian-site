@@ -1,0 +1,13 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Album from "@components/Album.astro";
+
+interface Props {
+  albums: CollectionEntry<"albums">[];
+}
+
+const { albums } = Astro.props;
+---
+<div class="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+  {albums.map((album) => <Album album={album} />)}
+</div>

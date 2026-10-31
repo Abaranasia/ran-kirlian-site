@@ -1,0 +1,15 @@
+---
+import type { CollectionEntry } from "astro:content";
+import NewsItem from "@components/NewsItem.astro";
+
+interface Props {
+  items: CollectionEntry<"news">[];
+}
+
+const { items } = Astro.props;
+---
+<section aria-labelledby="home-news">
+  <h2 id="home-news">News and upcoming releases</h2>
+  {items.map((item) => <NewsItem item={item} compact />)}
+  <p><a href="/news">Visit archived news</a></p>
+</section>

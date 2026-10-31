@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { displayTitle } from "@utils/releases";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
@@ -11,28 +12,27 @@ const frontmatter = album.data;
 ---
 <div class="lg:flex">
     
-    <div class="flex flex-col justify-between py-6 lg:mx-6">
+    <div class="flex flex-col justify-between py-6">
       <a
         href={`/albums/${album.id}`}
         class="group flex flex-col hover:no-underline"
       >
         <Image
-          class="w-full h-64 object-cover rounded-lg transition-opacity group-hover:opacity-80"
+          class="w-full aspect-square object-cover rounded-lg transition-opacity group-hover:opacity-80"
           src={frontmatter.image}
-          alt={frontmatter.title}
+          alt={displayTitle(album)}
           width={400}
           height={400}
           quality="low"
           loading="lazy"
           transition:name={`${album.id}-image`}
         />
-        <span class="text-lg group-hover:underline text-white text-center my-3">
-          {frontmatter.title}
+        <span class="text-base group-hover:underline text-white text-center mt-3">
+          {displayTitle(album)}
+        </span>
+        <span class="text-sm text-gray-400 text-center mt-1">
+          {frontmatter.year}
         </span>
       </a>
-
-      <span class="text-sm text-gray-300">
-        
-      </span>
     </div>
   </div>

@@ -1,25 +1,18 @@
 ---
 import { getCollection } from "astro:content";
-import Album from "@components/Album.astro";
+import ReleasesLayout from "@components/ReleasesLayout.astro";
 import MainLayout from "@layouts/MainLayout.astro";
 import { siteConfig } from "@config/site-config";
+import { sortByReleaseDate } from "@utils/releases";
 
-const albums = (await getCollection('albums')).sort(
-  (a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title)
-);
+const albums = sortByReleaseDate(await getCollection('albums'));
 
 ---
 
-<MainLayout title="Ran Kirlian official website">
+<MainLayout title="Ran Kirlian official website" wide>
   <h1 class="text-3xl font-semibold capitalize lg:text-4xl text-white">
     {siteConfig.title}
   </h1>
 
-	<div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-3">
-        {
-          albums.map((album) => (
-            <Album album= {album} />
-          ))
-        } 
-      </div> 
+  <ReleasesLayout albums={albums} />
 </MainLayout>

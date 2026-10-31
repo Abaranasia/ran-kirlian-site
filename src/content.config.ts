@@ -29,6 +29,7 @@ const albumsCollection = defineCollection({
             name: z.string(),
         })).default([]),
         tools: z.array(z.string()).default([]),
+        series: z.array(z.enum(["ethernautica", "many-futures"])).default([]),
         tuning: z.string().optional(),
         format: z.string().optional(),
         featured: z.boolean().default(false),

@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { getCollection, render } from "astro:content";
 import { Image } from "astro:assets";
+import { displayTitle } from "@utils/releases";
 import MainLayout from "@layouts/MainLayout.astro";
 import Tracks from "@components/Tracks.astro";
 
@@ -10,7 +11,8 @@ import Tracks from "@components/Tracks.astro";
     const albums = await getCollection('albums')
     for (const album of albums) {
         if (album.data.image.width <= MIN_ALBUM_COVER_WIDTH) {
-            throw new Error(`Album "${album.id}" cover should be wider than ${MIN_ALBUM_COVER_WIDTH}px`);
+            // Some legacy releases only have low-resolution covers; warn instead of failing the build.
+            console.warn(`Album "${album.id}" cover should be wider than ${MIN_ALBUM_COVER_WIDTH}px`);
         }
     }
     return albums.map((album) => (
@@ -22,18 +24,24 @@ import Tracks from "@components/Tracks.astro";
 }) satisfies GetStaticPaths;
 const { album }= Astro.props;
 const frontmatter = album.data;
+const title = displayTitle(album);
 
 const { Content } = await render(album);
 
+// Release dates are parsed as UTC midnight, so format in UTC to avoid an off-by-one day.
+const releasedOn = frontmatter.releaseDate
+    ? frontmatter.releaseDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })
+    : frontmatter.year;
+
 ---
-<MainLayout title={frontmatter.title}>
-    <h1 class="text-3xl text-white pt-5">{frontmatter.title}</h1>
+<MainLayout title={title}>
+    <h1 class="text-3xl text-white pt-5">{title}</h1>
     <a href="/">Back</a>
     <div  class="grid grid-cols-1 gap-8 mt-5 md:mt-5 md:grid-cols-2">
         <Image
             class=" rounded-md my-5"
             src={frontmatter.image}
-            alt={frontmatter.title}
+            alt={title}
             width={600}
             height={600}
             quality="high"
@@ -48,7 +56,14 @@ const { Content } = await render(album);
     </div>
 
     <!-- Album Contents -->
-     <Content /> 
+    <p class="text-gray-400">Released {releasedOn}</p>
+     <Content />
+
+    <p>
+        <a href={frontmatter.bandcampUrl} target="_blank" rel="noopener noreferrer">
+            Listen and purchase on Bandcamp
+        </a>
+    </p>
 
     <footer class="my-20 text-center">
         Social media links

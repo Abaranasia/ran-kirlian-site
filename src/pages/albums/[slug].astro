@@ -1,25 +1,29 @@
 ---
 import type { GetStaticPaths } from "astro";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import { Image } from "astro:assets";
 import MainLayout from "@layouts/MainLayout.astro";
 import Tracks from "@components/Tracks.astro";
 
  export const getStaticPaths = (async () => {
+    const MIN_ALBUM_COVER_WIDTH = 500;
     const albums = await getCollection('albums')
+    for (const album of albums) {
+        if (album.data.image.width <= MIN_ALBUM_COVER_WIDTH) {
+            throw new Error(`Album "${album.id}" cover should be wider than ${MIN_ALBUM_COVER_WIDTH}px`);
+        }
+    }
     return albums.map((album) => (
         {
-            params: { slug: album.slug},
+            params: { slug: album.id},
             props: { album: album}
         }
     ))
 }) satisfies GetStaticPaths;
 const { album }= Astro.props;
-console.log('albums :>> ', album);
 const frontmatter = album.data;
 
-const { Content, headings} = await album.render(); 
-//const author = await getEntry('author', post.data.author.id);
+const { Content } = await render(album);
 
 ---
 <MainLayout title={frontmatter.title}>
@@ -34,6 +38,7 @@ const { Content, headings} = await album.render();
             height={600}
             quality="high"
             loading="lazy"
+            transition:name={`${album.id}-image`}
         />  
         <div>
             
@@ -41,18 +46,6 @@ const { Content, headings} = await album.render();
             <p class="text-right mt-10">Complete set: {frontmatter.duration}</p>
         </div>
     </div>
-    
-    <!-- Table of contents -->
-<!--     <h3>Tabla de contenidos</h3>
-    <ol>
-        {
-            headings.map((heading, index) => (
-                <li>
-                    <a href={`#${heading.slug}`}>{index+1} - {heading.text}</a>
-                </li>
-            ))
-        }
-    </ol> -->
 
     <!-- Album Contents -->
      <Content /> 
@@ -60,4 +53,4 @@ const { Content, headings} = await album.render();
     <footer class="my-20 text-center">
         Social media links
     </footer>
-</BlogCollectionLayout>
+</MainLayout>

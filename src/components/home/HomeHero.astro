@@ -1,12 +1,44 @@
 ---
+import type { CollectionEntry } from "astro:content";
+import AlbumCover from "@components/AlbumCover.astro";
+import { displayTitle, releaseTypeLabels, trackCountLabel } from "@utils/releases";
+
 interface Props {
   name: string;
   tagline: string;
+  // Release shown large; its blurred cover is the page backdrop (see src/pages/index.astro).
+  album: CollectionEntry<"albums">;
 }
 
-const { name, tagline } = Astro.props;
+const { name, tagline, album } = Astro.props;
+const { data } = album;
+const title = displayTitle(album);
 ---
-<section aria-labelledby="home-hero" class="py-8 text-center md:py-12">
-  <h1 id="home-hero" class="text-4xl font-semibold lg:text-5xl">{name}</h1>
-  <p class="text-xl text-slate-300">{tagline}</p>
+<section aria-labelledby="home-hero" class="pt-8 pb-20 md:pt-16 md:pb-28">
+  <h1 id="home-hero" class="sr-only">{name}: {tagline}</h1>
+  <div class="grid items-center gap-10 md:grid-cols-2 md:gap-16">
+    <AlbumCover
+      album={album}
+      alt={`Cover of ${title}`}
+      width={880}
+      quality="high"
+      loading="eager"
+      class="w-full max-w-[440px] shadow-[0_30px_80px_rgb(0_0_0/0.6)]"
+    />
+    <div class="flex flex-col gap-5">
+      <p class="eyebrow my-0 text-[0.8125rem]">Featured release</p>
+      <h2 class="my-0 text-5xl leading-[0.95] font-light tracking-tight sm:text-6xl lg:text-[4.75rem]">{title}</h2>
+      <p class="my-0 text-lg text-muted">
+        {releaseTypeLabels[data.type]} &middot; {data.year} &middot; {trackCountLabel(album)} &middot; {data.duration}
+      </p>
+      <div class="mt-3 flex flex-wrap gap-3">
+        <a href={data.bandcampUrl} target="_blank" rel="noopener noreferrer" class="pill pill-solid min-h-12 px-6 text-base">
+          Listen on Bandcamp<span class="sr-only"> (external site)</span>
+        </a>
+        <a href={`/albums/${album.id}/`} class="pill pill-outline min-h-12 px-6 text-base">
+          View release<span class="sr-only">: {title}</span>
+        </a>
+      </div>
+    </div>
+  </div>
 </section>

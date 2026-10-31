@@ -1,25 +1,33 @@
 ---
-import { getCollection, getEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import MainLayout from "@layouts/MainLayout.astro";
 import HomeHero from "@components/home/HomeHero.astro";
 import FeaturedReleases from "@components/home/FeaturedReleases.astro";
 import LatestReleases from "@components/home/LatestReleases.astro";
 import LatestNews from "@components/home/LatestNews.astro";
+import NebulaBackdrop from "@components/NebulaBackdrop.astro";
 import { siteConfig } from "@config/site-config";
+import { getProfile } from "@utils/profile";
+import { toOgImage } from "@utils/og-image";
+import { artistJsonLd, websiteJsonLd } from "@utils/seo";
 import { homeLatestReleaseIds } from "@config/home";
 import { sortByReleaseDate } from "@utils/releases";
 import { sortNewsByDate } from "@utils/news";
 
 const LATEST_NEWS_COUNT = 5;
 
-const profile = await getEntry("profile", "ran-kirlian");
-if (!profile) {
-  throw new Error('Missing profile entry "ran-kirlian" in src/content/profile.json');
-}
-const { name, tagline } = profile.data;
+const profile = await getProfile();
+const { name, tagline, photo } = profile.data;
+const site = Astro.site!;
+const description = `${name}: ${tagline.toLowerCase()} based in ${siteConfig.location}. Discography, news, press reviews and where to listen.`;
+const jsonLd = [
+  websiteJsonLd(site),
+  artistJsonLd({ profile, site, imageUrl: photo ? (await toOgImage(photo, site)).url : undefined }),
+];
 
 const albums = sortByReleaseDate(await getCollection("albums"));
-const featured = albums.filter((album) => album.data.featured);
+// The newest featured release leads the hero (falling back to the newest release); the rest follow it.
+const [heroAlbum = albums[0], ...featured] = albums.filter((album) => album.data.featured);
 const latestReleases = homeLatestReleaseIds.map((id) => {
   const album = albums.find((entry) => entry.id === id);
   if (!album) {
@@ -30,8 +38,9 @@ const latestReleases = homeLatestReleaseIds.map((id) => {
 const latestNews = sortNewsByDate(await getCollection("news")).slice(0, LATEST_NEWS_COUNT);
 ---
 
-<MainLayout title={`${name} | ${tagline}`} description={siteConfig.description}>
-  <HomeHero name={name} tagline={tagline} />
+<MainLayout title={`${name} | ${tagline}`} description={description} jsonLd={jsonLd}>
+  <NebulaBackdrop slot="backdrop" image={heroAlbum.data.image} class="h-[60rem] md:h-[46rem]" />
+  <HomeHero name={name} tagline={tagline} album={heroAlbum} />
   <FeaturedReleases albums={featured} />
   <LatestReleases albums={latestReleases} />
   <LatestNews items={latestNews} />

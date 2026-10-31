@@ -11,9 +11,9 @@ const { current } = Astro.props;
 const albums = await getCollection("albums");
 
 const links = [
-  { href: "/releases", label: "All releases", count: albums.length, active: current === undefined },
+  { href: "/releases/", label: "All releases", count: albums.length, active: current === undefined },
   ...releaseCategories.map((category) => ({
-    href: `/releases/${category.slug}`,
+    href: `/releases/${category.slug}/`,
     label: category.label,
     count: albums.filter(category.matches).length,
     active: current === category.slug,
@@ -23,19 +23,14 @@ const links = [
 <nav aria-label="Release categories">
   <ul class="flex flex-wrap gap-2 md:flex-col md:gap-1">
     {links.map((link) => (
-      <li class="list-none ml-0 pl-0 not-italic">
+      <li class="list-none ml-0 pl-0">
         <a
           href={link.href}
           aria-current={link.active ? "page" : undefined}
-          class:list={[
-            "flex items-center justify-between gap-3 rounded-md px-3 py-2 text-sm hover:no-underline",
-            link.active
-              ? "bg-gray-700 text-white font-semibold"
-              : "text-gray-300 hover:bg-gray-800 hover:text-white",
-          ]}
+          class:list={["pill w-full", link.active ? "pill-active" : "pill-quiet"]}
         >
-          <span>{link.label}</span>
-          <span class="text-xs text-gray-400">{link.count}</span>
+          <span class="flex-1 text-left">{link.label}</span>
+          <span class:list={["text-xs tabular-nums", link.active ? "text-accent" : "text-muted"]}>{link.count}</span>
         </a>
       </li>
     ))}

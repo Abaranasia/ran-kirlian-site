@@ -9,4 +9,4 @@ album: the-shape-of-memories
 
 **The Shape of Memories** is a long-form piece released at [Complex Silence](http://complexsilence.wordpress.com) project (Volume 38). A combination of smooth textures with field recordings of a rainy autum afternoon conforms a soundworld to illustrate the passing of time thru our memories.
 
-[More details](/albums/the-shape-of-memories)
+[More details](/albums/the-shape-of-memories/)

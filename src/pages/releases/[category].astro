@@ -26,9 +26,7 @@ const description = `${category.label} by ambient musician Ran Kirlian: ${releas
 ---
 
 <MainLayout title={`${category.label} | Ran Kirlian`} description={description}>
-  <h1 class="text-3xl font-semibold lg:text-4xl text-white">
-    {category.label}
-  </h1>
+  <h1 class="mt-6 mb-0 lg:mt-10">{category.label}</h1>
 
   <ReleasesLayout albums={albums} current={category.slug} />
 </MainLayout>

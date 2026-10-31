@@ -1,36 +1,100 @@
 @import "tailwindcss";
 
+/* "Deep Field — Nebula" design tokens: dark ground, hairline borders, one cool accent. */
+@theme {
+  --color-ground: #07090d;
+  --color-surface: #0e131a;
+  --color-hairline: #1a2029;
+  --color-hairline-strong: #2a3340;
+  --color-ink: #dce3ea;
+  --color-muted: #8d99a6;
+  --color-accent: #7fb8c9;
+  --color-accent-hover: #a9d3e0;
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
 @layer base {
   html {
-    @apply bg-gray-900 px-10;
+    @apply bg-ground font-sans text-ink antialiased;
     scroll-behavior: smooth;
   }
 
   body {
-    @apply mt-10;
+    @apply bg-ground;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display text-ink;
   }
 
   h1 {
-    @apply text-3xl text-white my-5;
+    @apply text-4xl font-light tracking-tight my-5 lg:text-5xl;
   }
 
   h2 {
-    @apply text-2xl text-slate-300 my-5;
+    @apply text-2xl font-normal my-5 lg:text-3xl;
   }
 
   h3 {
-    @apply text-xl text-slate-300 my-5;
+    @apply text-xl font-normal my-5;
   }
 
   p {
-    @apply text-white my-5;
+    @apply my-5 leading-relaxed;
   }
 
   a {
-    @apply text-blue-500 hover:underline;
+    @apply text-accent underline-offset-4 hover:text-accent-hover hover:underline;
   }
 
   li {
-    @apply list-disc ml-5 pl-2 italic;
+    @apply list-disc ml-5 pl-2;
   }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+}
+
+/* Pill links and buttons: ≥44px touch target, rounded-full, display font. */
+@utility pill {
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-4 font-display text-sm transition-colors;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+/* Primary call to action. */
+@utility pill-solid {
+  @apply bg-accent font-medium text-ground hover:bg-accent-hover hover:text-ground;
+}
+
+/* Secondary call to action or unselected filter. */
+@utility pill-outline {
+  @apply border border-hairline-strong text-ink hover:border-accent hover:text-ink;
+}
+
+/* Outlined accent link, e.g. the external Bandcamp link in the header. */
+@utility pill-accent {
+  @apply border border-accent/50 text-accent hover:border-accent hover:text-accent-hover;
+}
+
+/* Current page or selected filter. */
+@utility pill-active {
+  @apply bg-accent/14 text-ink hover:text-ink;
+}
+
+/* Unselected navigation item. */
+@utility pill-quiet {
+  @apply text-muted hover:bg-surface hover:text-ink;
+}
+
+/* Small uppercase, wide-tracked label above titles. */
+@utility eyebrow {
+  @apply font-display text-xs tracking-[0.24em] text-accent uppercase;
 }

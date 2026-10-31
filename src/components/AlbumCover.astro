@@ -1,0 +1,60 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { isLowResCover } from "@utils/releases";
+
+interface Props {
+  album: CollectionEntry<"albums">;
+  alt: string;
+  // Rendered width in pixels; low-resolution covers never upscale beyond their own width.
+  width: number;
+  quality?: "low" | "mid" | "high";
+  loading?: "lazy" | "eager";
+  transitionName?: string;
+  class?: string;
+}
+
+const { album, alt, width, quality = "mid", loading = "lazy", transitionName, class: className } = Astro.props;
+const { image } = album.data;
+const lowRes = isLowResCover(album);
+const sharpWidth = Math.min(width, image.width);
+---
+<div
+  class:list={["relative aspect-square overflow-hidden rounded-md bg-surface", className]}
+  transition:name={transitionName}
+>
+  {lowRes ? (
+    <>
+      {/* Legacy low-resolution cover: a blurred copy fills the square and the cover sits at 70%. */}
+      <Image
+        class="absolute -top-5 -left-5 h-[calc(100%+2.5rem)] w-[calc(100%+2.5rem)] max-w-none object-cover opacity-60 blur-[20px]"
+        src={image}
+        alt=""
+        aria-hidden="true"
+        width={64}
+        height={64}
+        quality="low"
+        loading={loading}
+      />
+      <Image
+        class="absolute top-[15%] left-[15%] size-[70%] rounded-sm object-cover shadow-lg shadow-black/50"
+        src={image}
+        alt={alt}
+        width={sharpWidth}
+        height={sharpWidth}
+        quality={quality}
+        loading={loading}
+      />
+    </>
+  ) : (
+    <Image
+      class="size-full object-cover"
+      src={image}
+      alt={alt}
+      width={sharpWidth}
+      height={sharpWidth}
+      quality={quality}
+      loading={loading}
+    />
+  )}
+</div>

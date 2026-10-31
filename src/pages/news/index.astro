@@ -15,7 +15,7 @@ const latest = sortNewsByDate(news).slice(0, LATEST_NEWS_COUNT);
   title="News | Ran Kirlian"
   description="Latest news and upcoming releases from ambient musician Ran Kirlian."
 >
-  <h1>News and upcoming releases</h1>
+  <h1 class="mt-6 mb-0 lg:mt-10">News and upcoming releases</h1>
 
   <section aria-label="Latest news">
     {latest.map((item) => <NewsItem item={item} />)}

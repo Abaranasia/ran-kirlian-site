@@ -1,15 +1,37 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import NewsItem from "@components/NewsItem.astro";
+import { formatDate, isoDate } from "@utils/dates";
+import { newsStatusLabels, newsYear } from "@utils/news";
 
 interface Props {
   items: CollectionEntry<"news">[];
 }
 
 const { items } = Astro.props;
+// News items have no page of their own: link to the release they announce, else to their year archive.
+const newsHref = (item: CollectionEntry<"news">) =>
+  item.data.album ? `/albums/${item.data.album.id}/` : `/news/${newsYear(item)}/`;
 ---
-<section aria-labelledby="home-news">
-  <h2 id="home-news">News and upcoming releases</h2>
-  {items.map((item) => <NewsItem item={item} compact />)}
-  <p><a href="/news/">Visit archived news</a></p>
+<section aria-labelledby="home-news" class="border-t border-hairline pt-14 pb-4">
+  <div class="mb-7 flex flex-wrap items-center justify-between gap-4">
+    <h2 id="home-news" class="my-0">Signals</h2>
+    <a href="/news/" class="pill pill-outline">Visit archived news</a>
+  </div>
+  <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {items.map((item) => (
+      <li class="relative list-none ml-0 flex flex-col gap-3 rounded-[10px] border border-hairline bg-surface p-6 hover:border-hairline-strong">
+        <p class="my-0 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs tracking-[0.16em] uppercase">
+          {item.data.status !== "info" && <span class="text-accent">{newsStatusLabels[item.data.status]}</span>}
+          <time datetime={isoDate(item.data.date)} class="text-muted">{formatDate(item.data.date)}</time>
+        </p>
+        <h3 class="my-0 text-xl leading-snug lg:text-2xl">
+          {/* The link covers the whole card. */}
+          <a href={newsHref(item)} class="text-ink after:absolute after:inset-0 after:rounded-[10px] hover:text-accent-hover">
+            {item.data.title}
+          </a>
+        </h3>
+        {item.data.artist !== "Ran Kirlian" && <p class="my-0 text-sm text-muted">{item.data.artist}</p>}
+      </li>
+    ))}
+  </ul>
 </section>

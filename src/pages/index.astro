@@ -5,6 +5,7 @@ import HomeHero from "@components/home/HomeHero.astro";
 import FeaturedReleases from "@components/home/FeaturedReleases.astro";
 import LatestReleases from "@components/home/LatestReleases.astro";
 import LatestNews from "@components/home/LatestNews.astro";
+import NebulaBackdrop from "@components/NebulaBackdrop.astro";
 import { siteConfig } from "@config/site-config";
 import { getProfile } from "@utils/profile";
 import { toOgImage } from "@utils/og-image";
@@ -25,7 +26,8 @@ const jsonLd = [
 ];
 
 const albums = sortByReleaseDate(await getCollection("albums"));
-const featured = albums.filter((album) => album.data.featured);
+// The newest featured release leads the hero (falling back to the newest release); the rest follow it.
+const [heroAlbum = albums[0], ...featured] = albums.filter((album) => album.data.featured);
 const latestReleases = homeLatestReleaseIds.map((id) => {
   const album = albums.find((entry) => entry.id === id);
   if (!album) {
@@ -37,7 +39,8 @@ const latestNews = sortNewsByDate(await getCollection("news")).slice(0, LATEST_N
 ---
 
 <MainLayout title={`${name} | ${tagline}`} description={description} jsonLd={jsonLd}>
-  <HomeHero name={name} tagline={tagline} />
+  <NebulaBackdrop slot="backdrop" image={heroAlbum.data.image} class="h-[60rem] md:h-[46rem]" />
+  <HomeHero name={name} tagline={tagline} album={heroAlbum} />
   <FeaturedReleases albums={featured} />
   <LatestReleases albums={latestReleases} />
   <LatestNews items={latestNews} />

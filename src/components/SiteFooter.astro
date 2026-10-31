@@ -5,15 +5,15 @@ import SocialLinks from "@components/SocialLinks.astro";
 const profile = await getEntry("profile", "ran-kirlian");
 const year = new Date().getFullYear();
 ---
-<footer class="mt-20 border-t border-gray-700 pt-6 pb-10 text-center text-sm text-gray-400">
+<footer class="mt-20 flex flex-col items-center gap-4 border-t border-hairline pt-12 pb-16 text-center">
   {profile && (
-    <section id="contact" aria-labelledby="footer-contact">
-      <h2 id="footer-contact">Contact</h2>
-      <p class="text-gray-300">You can follow or contact me on these platforms</p>
+    <section id="contact" aria-labelledby="footer-contact" class="flex scroll-mt-6 flex-col items-center gap-4">
+      <h2 id="footer-contact" class="my-0 text-xl lg:text-2xl">Contact</h2>
+      <p class="my-0 text-muted">You can follow or contact me on these platforms</p>
       <nav aria-label="Social media">
         <SocialLinks socials={profile.data.socials} email={profile.data.email} class="justify-center" />
       </nav>
     </section>
   )}
-  <p class="text-gray-400 my-4">&copy; {year} {profile?.data.name ?? "Ran Kirlian"}. All rights reserved.</p>
+  <p class="my-0 text-sm text-muted">&copy; {year} {profile?.data.name ?? "Ran Kirlian"}. All rights reserved.</p>
 </footer>

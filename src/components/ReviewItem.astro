@@ -17,28 +17,28 @@ const albumTitle = album ? displayTitle(album) : data.album.id;
 const Heading = `h${headingLevel}` as "h2" | "h3";
 const { Content } = await render(review);
 ---
-<article class="border-b border-gray-800 py-8">
+<article class="max-w-prose border-b border-hairline py-10">
   <header>
-    <Heading class="mt-0 mb-2 text-white">
+    <Heading class="mt-0 mb-2 text-2xl leading-snug">
       {showAlbum ? (
         <>
           <a href={`/albums/${data.album.id}/`}>{albumTitle}</a>
-          <span class="text-slate-300"> reviewed by {data.publication}</span>
+          <span class="text-muted"> reviewed by {data.publication}</span>
         </>
       ) : (
         data.publication
       )}
     </Heading>
-    <p class="my-0 text-sm text-gray-400">
+    <p class="my-0 text-xs tracking-[0.16em] text-muted uppercase">
       {data.reviewer && <>{data.reviewer} &middot; </>}
       <time datetime={isoDate(data.date)}>{formatDate(data.date)}</time>
     </p>
   </header>
-  {data.excerpt && <p class="italic text-gray-300">{data.excerpt}</p>}
+  {data.excerpt && <p class="border-l-2 border-accent/60 pl-4 font-display text-lg text-ink">{data.excerpt}</p>}
   <Content />
   {data.sourceUrl && (
-    <p>
-      <a href={data.sourceUrl} target="_blank" rel="noopener noreferrer">
+    <p class="mb-0">
+      <a href={data.sourceUrl} target="_blank" rel="noopener noreferrer" class="pill pill-outline">
         Read the review at {data.publication}<span class="sr-only"> (external site)</span>
       </a>
     </p>

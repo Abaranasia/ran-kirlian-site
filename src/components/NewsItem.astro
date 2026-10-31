@@ -1,0 +1,55 @@
+---
+import { Image } from "astro:assets";
+import { getEntry, render, type CollectionEntry } from "astro:content";
+import { formatDate, isoDate } from "@utils/dates";
+import { newsStatusLabels } from "@utils/news";
+import { displayTitle } from "@utils/releases";
+
+interface Props {
+  item: CollectionEntry<"news">;
+}
+
+const { item } = Astro.props;
+const { data } = item;
+const album = data.album ? await getEntry(data.album) : undefined;
+// Items without their own cover fall back to the cover of the album they announce.
+const cover = data.cover ?? album?.data.image;
+const { Content } = await render(item);
+---
+<article class="border-b border-gray-800 py-8 md:grid md:grid-cols-[12rem_1fr] md:gap-8">
+  <div class="mb-4 md:mb-0">
+    {cover && (
+      <Image
+        class="w-48 rounded-md"
+        src={cover}
+        alt=""
+        width={300}
+        quality="mid"
+        loading="lazy"
+      />
+    )}
+  </div>
+  <div>
+    <header>
+      <p class="my-0 flex flex-wrap items-center gap-3 text-sm text-gray-400">
+        <time datetime={isoDate(data.date)}>{formatDate(data.date)}</time>
+        <span class="rounded-full border border-gray-600 px-2 py-0.5 text-xs uppercase tracking-wide text-gray-300">
+          {newsStatusLabels[data.status]}
+        </span>
+      </p>
+      <h2 class="mt-2 mb-0 text-white">{data.title}</h2>
+      {data.artist !== "Ran Kirlian" && <p class="my-1 text-gray-400">{data.artist}</p>}
+    </header>
+    <Content />
+    {(album || data.link) && (
+      <p class="flex flex-wrap gap-x-6 gap-y-2">
+        {album && <a href={`/albums/${album.id}`}>View {displayTitle(album)}</a>}
+        {data.link && (
+          <a href={data.link} target="_blank" rel="noopener noreferrer">
+            More information<span class="sr-only"> about {data.title} (external site)</span>
+          </a>
+        )}
+      </p>
+    )}
+  </div>
+</article>

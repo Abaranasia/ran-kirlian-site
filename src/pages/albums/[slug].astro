@@ -3,8 +3,11 @@ import type { GetStaticPaths } from "astro";
 import { getCollection, render } from "astro:content";
 import { Image } from "astro:assets";
 import { displayTitle } from "@utils/releases";
+import { formatDate } from "@utils/dates";
+import { sortReviewsByDate } from "@utils/reviews";
 import MainLayout from "@layouts/MainLayout.astro";
 import Tracks from "@components/Tracks.astro";
+import ReviewItem from "@components/ReviewItem.astro";
 
  export const getStaticPaths = (async () => {
     const MIN_ALBUM_COVER_WIDTH = 500;
@@ -28,13 +31,14 @@ const title = displayTitle(album);
 
 const { Content } = await render(album);
 
-// Release dates are parsed as UTC midnight, so format in UTC to avoid an off-by-one day.
-const releasedOn = frontmatter.releaseDate
-    ? frontmatter.releaseDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })
-    : frontmatter.year;
+const releasedOn = frontmatter.releaseDate ? formatDate(frontmatter.releaseDate) : frontmatter.year;
+
+const reviews = sortReviewsByDate(
+    await getCollection("reviews", (review) => review.data.album.id === album.id)
+);
 
 ---
-<MainLayout title={title}>
+<MainLayout title={`${title} | Ran Kirlian`} description={`${title} (${frontmatter.year}) by ${frontmatter.author}: tracklist, credits, reviews and where to listen.`}>
     <h1 class="text-3xl text-white pt-5">{title}</h1>
     <a href="/">Back</a>
     <div  class="grid grid-cols-1 gap-8 mt-5 md:mt-5 md:grid-cols-2">
@@ -65,7 +69,10 @@ const releasedOn = frontmatter.releaseDate
         </a>
     </p>
 
-    <footer class="my-20 text-center">
-        Social media links
-    </footer>
+    {reviews.length > 0 && (
+        <section aria-labelledby="album-reviews">
+            <h2 id="album-reviews">Reviews</h2>
+            {reviews.map((review) => <ReviewItem review={review} showAlbum={false} headingLevel={3} />)}
+        </section>
+    )}
 </MainLayout>

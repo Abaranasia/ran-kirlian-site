@@ -1,0 +1,17 @@
+---
+import { getCollection } from "astro:content";
+import MainLayout from "@layouts/MainLayout.astro";
+import ReviewItem from "@components/ReviewItem.astro";
+import { sortReviewsByDate } from "@utils/reviews";
+
+const reviews = sortReviewsByDate(await getCollection("reviews"));
+---
+
+<MainLayout
+  title="Reviews | Ran Kirlian"
+  description="Press reviews of Ran Kirlian's ambient albums."
+>
+  <h1>Reviews</h1>
+
+  {reviews.map((review) => <ReviewItem review={review} />)}
+</MainLayout>

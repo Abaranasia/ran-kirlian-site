@@ -1,0 +1,46 @@
+---
+import { getEntry, render, type CollectionEntry } from "astro:content";
+import { formatDate, isoDate } from "@utils/dates";
+import { displayTitle } from "@utils/releases";
+
+interface Props {
+  review: CollectionEntry<"reviews">;
+  // Hide the album label when the review is already shown on its album page.
+  showAlbum?: boolean;
+  headingLevel?: 2 | 3;
+}
+
+const { review, showAlbum = true, headingLevel = 2 } = Astro.props;
+const { data } = review;
+const album = await getEntry(data.album);
+const albumTitle = album ? displayTitle(album) : data.album.id;
+const Heading = `h${headingLevel}` as "h2" | "h3";
+const { Content } = await render(review);
+---
+<article class="border-b border-gray-800 py-8">
+  <header>
+    <Heading class="mt-0 mb-2 text-white">
+      {showAlbum ? (
+        <>
+          <a href={`/albums/${data.album.id}`}>{albumTitle}</a>
+          <span class="text-slate-300"> reviewed by {data.publication}</span>
+        </>
+      ) : (
+        data.publication
+      )}
+    </Heading>
+    <p class="my-0 text-sm text-gray-400">
+      {data.reviewer && <>{data.reviewer} &middot; </>}
+      <time datetime={isoDate(data.date)}>{formatDate(data.date)}</time>
+    </p>
+  </header>
+  {data.excerpt && <p class="italic text-gray-300">{data.excerpt}</p>}
+  <Content />
+  {data.sourceUrl && (
+    <p>
+      <a href={data.sourceUrl} target="_blank" rel="noopener noreferrer">
+        Read the review at {data.publication}<span class="sr-only"> (external site)</span>
+      </a>
+    </p>
+  )}
+</article>

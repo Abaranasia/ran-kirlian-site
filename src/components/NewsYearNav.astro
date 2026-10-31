@@ -1,0 +1,40 @@
+---
+interface Props {
+  years: number[];
+  // Year whose archive is being shown; undefined on the latest news page.
+  current?: number;
+}
+
+const { years, current } = Astro.props;
+---
+<nav aria-label="News archive">
+  <h2 class="text-xl">Archive</h2>
+  <ul class="flex flex-wrap gap-2">
+    <li class="list-none ml-0 pl-0 not-italic">
+      <a
+        href="/news"
+        aria-current={current === undefined ? "page" : undefined}
+        class:list={[
+          "block rounded-md px-3 py-1 text-sm hover:no-underline",
+          current === undefined ? "bg-gray-700 text-white font-semibold" : "text-gray-300 hover:bg-gray-800 hover:text-white",
+        ]}
+      >
+        Latest
+      </a>
+    </li>
+    {years.map((year) => (
+      <li class="list-none ml-0 pl-0 not-italic">
+        <a
+          href={`/news/${year}`}
+          aria-current={current === year ? "page" : undefined}
+          class:list={[
+            "block rounded-md px-3 py-1 text-sm hover:no-underline",
+            current === year ? "bg-gray-700 text-white font-semibold" : "text-gray-300 hover:bg-gray-800 hover:text-white",
+          ]}
+        >
+          {year}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

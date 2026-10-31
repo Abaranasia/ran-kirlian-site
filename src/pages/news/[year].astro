@@ -1,0 +1,42 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import MainLayout from "@layouts/MainLayout.astro";
+import NewsItem from "@components/NewsItem.astro";
+import NewsYearNav from "@components/NewsYearNav.astro";
+import { newsYear, newsYears, sortNewsByDate } from "@utils/news";
+
+export const getStaticPaths = (async () => {
+  const news = await getCollection("news");
+  const years = newsYears(news);
+  return years.map((year) => ({
+    params: { year: String(year) },
+    props: {
+      year,
+      years,
+      items: sortNewsByDate(news.filter((item) => newsYear(item) === year)),
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  year: number;
+  years: number[];
+  items: CollectionEntry<"news">[];
+}
+
+const { year, years, items } = Astro.props;
+---
+
+<MainLayout
+  title={`News from ${year} | Ran Kirlian`}
+  description={`Ran Kirlian news archive: releases, videos and other music activity from ${year}.`}
+>
+  <h1>News from {year}</h1>
+
+  <section aria-label={`News from ${year}`}>
+    {items.map((item) => <NewsItem item={item} />)}
+  </section>
+
+  <NewsYearNav years={years} current={year} />
+</MainLayout>

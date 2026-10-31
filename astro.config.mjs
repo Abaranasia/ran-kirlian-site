@@ -8,6 +8,10 @@ import mdx from '@astrojs/mdx';
 // https://astro.build/config
 export default defineConfig({
   integrations: [mdx()],
+  // The home page already lists every release.
+  redirects: {
+    '/releases': '/',
+  },
   vite: {
     plugins: [tailwindcss()],
   },

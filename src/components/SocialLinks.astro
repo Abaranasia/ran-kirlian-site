@@ -1,0 +1,15 @@
+---
+interface Props {
+  socials: { name: string; url: string }[];
+  class?: string;
+}
+
+const { socials, class: className } = Astro.props;
+---
+<ul class:list={["flex flex-wrap gap-x-5 gap-y-2", className]}>
+  {socials.map((social) => (
+    <li class="list-none ml-0 pl-0 not-italic">
+      <a href={social.url} target="_blank" rel="noopener noreferrer">{social.name}</a>
+    </li>
+  ))}
+</ul>

@@ -1,0 +1,36 @@
+---
+import { getEntry } from "astro:content";
+import { Image } from "astro:assets";
+import MainLayout from "@layouts/MainLayout.astro";
+
+const profile = await getEntry("profile", "ran-kirlian");
+if (!profile) {
+  throw new Error('Missing profile entry "ran-kirlian" in src/content/profile.json');
+}
+const { name, tagline, bio, photo } = profile.data;
+// Blank lines in the bio separate paragraphs.
+const paragraphs = bio.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean);
+---
+
+<MainLayout
+  title={`About | ${name}`}
+  description={`About ${name}: ${tagline.toLowerCase()}.`}
+>
+  <h1>{name}</h1>
+  <p class="text-xl text-slate-300">{tagline}</p>
+
+  <div class="md:grid md:grid-cols-[1fr_20rem] md:gap-8 md:items-start">
+    <div>
+      {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+    {photo && (
+      <Image
+        class="mt-5 w-full rounded-md"
+        src={photo}
+        alt={`Portrait of ${name}`}
+        width={500}
+        quality="high"
+      />
+    )}
+  </div>
+</MainLayout>

@@ -8,7 +8,7 @@ export interface NavItem {
 
 // Ordered as shown in the main navigation. The purchase link comes from the profile collection.
 export const mainNavigation = (bandcampUrl: string): NavItem[] => [
-    { label: "Releases", href: "/", activePrefixes: ["/releases/", "/albums/"] },
+    { label: "Releases", href: "/releases", activePrefixes: ["/albums/"] },
     { label: "News", href: "/news" },
     { label: "Reviews", href: "/reviews" },
     { label: "About", href: "/about" },

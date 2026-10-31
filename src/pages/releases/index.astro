@@ -1,0 +1,19 @@
+---
+import { getCollection } from "astro:content";
+import ReleasesLayout from "@components/ReleasesLayout.astro";
+import MainLayout from "@layouts/MainLayout.astro";
+import { sortByReleaseDate } from "@utils/releases";
+
+const albums = sortByReleaseDate(await getCollection('albums'));
+---
+
+<MainLayout
+  title="Releases | Ran Kirlian"
+  description="Every Ran Kirlian release: full-length albums, mini-albums and the Ethernautica and Many Futures series."
+>
+  <h1 class="text-3xl font-semibold lg:text-4xl text-white">
+    Releases
+  </h1>
+
+  <ReleasesLayout albums={albums} />
+</MainLayout>

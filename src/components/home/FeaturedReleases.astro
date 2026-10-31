@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Album from "@components/Album.astro";
+
+interface Props {
+  albums: CollectionEntry<"albums">[];
+}
+
+const { albums } = Astro.props;
+---
+{albums.length > 0 && (
+  <section aria-labelledby="home-featured">
+    <h2 id="home-featured">Featured releases</h2>
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:max-w-3xl sm:mx-auto">
+      {albums.map((album) => <Album album={album} transition={false} />)}
+    </div>
+  </section>
+)}

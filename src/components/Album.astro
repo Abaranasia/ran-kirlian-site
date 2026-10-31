@@ -5,9 +5,11 @@ import type { CollectionEntry } from "astro:content";
 
 interface Props {
   album: CollectionEntry<"albums">;
+  // Disable when the same album appears twice on a page: transition names must be unique.
+  transition?: boolean;
 }
 
-const { album } = Astro.props;
+const { album, transition = true } = Astro.props;
 const frontmatter = album.data;
 ---
 <div class="lg:flex">
@@ -25,7 +27,7 @@ const frontmatter = album.data;
           height={400}
           quality="low"
           loading="lazy"
-          transition:name={`${album.id}-image`}
+          transition:name={transition ? `${album.id}-image` : undefined}
         />
         <span class="text-base group-hover:underline text-white text-center mt-3">
           {displayTitle(album)}

@@ -11,7 +11,7 @@ const { current } = Astro.props;
 const albums = await getCollection("albums");
 
 const links = [
-  { href: "/", label: "All releases", count: albums.length, active: current === undefined },
+  { href: "/releases", label: "All releases", count: albums.length, active: current === undefined },
   ...releaseCategories.map((category) => ({
     href: `/releases/${category.slug}`,
     label: category.label,

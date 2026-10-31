@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Album from "@components/Album.astro";
+
+interface Props {
+  albums: CollectionEntry<"albums">[];
+}
+
+const { albums } = Astro.props;
+---
+<section aria-labelledby="home-latest-releases">
+  <h2 id="home-latest-releases">Latest releases</h2>
+  <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
+    {albums.map((album) => <Album album={album} />)}
+  </div>
+  <p><a href="/releases">See all releases</a></p>
+</section>

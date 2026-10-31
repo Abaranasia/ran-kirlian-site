@@ -7,28 +7,38 @@ import { displayTitle } from "@utils/releases";
 
 interface Props {
   item: CollectionEntry<"news">;
+  // Compact items (home page) drop the cover and sit under a section h2.
+  compact?: boolean;
 }
 
-const { item } = Astro.props;
+const { item, compact = false } = Astro.props;
+const Heading = compact ? "h3" : "h2";
 const { data } = item;
 const album = data.album ? await getEntry(data.album) : undefined;
 // Items without their own cover fall back to the cover of the album they announce.
 const cover = data.cover ?? album?.data.image;
 const { Content } = await render(item);
 ---
-<article class="border-b border-gray-800 py-8 md:grid md:grid-cols-[12rem_1fr] md:gap-8">
-  <div class="mb-4 md:mb-0">
-    {cover && (
-      <Image
-        class="w-48 rounded-md"
-        src={cover}
-        alt=""
-        width={300}
-        quality="mid"
-        loading="lazy"
-      />
-    )}
-  </div>
+<article
+  class:list={[
+    "border-b border-gray-800",
+    compact ? "py-4" : "py-8 md:grid md:grid-cols-[12rem_1fr] md:gap-8",
+  ]}
+>
+  {!compact && (
+    <div class="mb-4 md:mb-0">
+      {cover && (
+        <Image
+          class="w-48 rounded-md"
+          src={cover}
+          alt=""
+          width={300}
+          quality="mid"
+          loading="lazy"
+        />
+      )}
+    </div>
+  )}
   <div>
     <header>
       <p class="my-0 flex flex-wrap items-center gap-3 text-sm text-gray-400">
@@ -37,7 +47,7 @@ const { Content } = await render(item);
           {newsStatusLabels[data.status]}
         </span>
       </p>
-      <h2 class="mt-2 mb-0 text-white">{data.title}</h2>
+      <Heading class="mt-2 mb-0 text-white">{data.title}</Heading>
       {data.artist !== "Ran Kirlian" && <p class="my-1 text-gray-400">{data.artist}</p>}
     </header>
     <Content />

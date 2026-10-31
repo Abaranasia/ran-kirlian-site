@@ -1,0 +1,12 @@
+---
+interface Props {
+  name: string;
+  tagline: string;
+}
+
+const { name, tagline } = Astro.props;
+---
+<section aria-labelledby="home-hero" class="py-8 text-center md:py-12">
+  <h1 id="home-hero" class="text-4xl font-semibold lg:text-5xl">{name}</h1>
+  <p class="text-xl text-slate-300">{tagline}</p>
+</section>

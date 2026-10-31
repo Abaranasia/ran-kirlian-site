@@ -21,11 +21,9 @@ import Tracks from "@components/Tracks.astro";
     ))
 }) satisfies GetStaticPaths;
 const { album }= Astro.props;
-console.log('albums :>> ', album);
 const frontmatter = album.data;
 
-const { Content, headings} = await render(album); 
-//const author = await getEntry('author', post.data.author.id);
+const { Content } = await render(album);
 
 ---
 <MainLayout title={frontmatter.title}>
@@ -40,6 +38,7 @@ const { Content, headings} = await render(album);
             height={600}
             quality="high"
             loading="lazy"
+            transition:name={`${album.id}-image`}
         />  
         <div>
             
@@ -47,18 +46,6 @@ const { Content, headings} = await render(album);
             <p class="text-right mt-10">Complete set: {frontmatter.duration}</p>
         </div>
     </div>
-    
-    <!-- Table of contents -->
-<!--     <h3>Tabla de contenidos</h3>
-    <ol>
-        {
-            headings.map((heading, index) => (
-                <li>
-                    <a href={`#${heading.slug}`}>{index+1} - {heading.text}</a>
-                </li>
-            ))
-        }
-    </ol> -->
 
     <!-- Album Contents -->
      <Content /> 

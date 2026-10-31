@@ -12,7 +12,7 @@ const { years, current } = Astro.props;
   <ul class="flex flex-wrap gap-2">
     <li class="list-none ml-0 pl-0 not-italic">
       <a
-        href="/news"
+        href="/news/"
         aria-current={current === undefined ? "page" : undefined}
         class:list={[
           "block rounded-md px-3 py-1 text-sm hover:no-underline",
@@ -25,7 +25,7 @@ const { years, current } = Astro.props;
     {years.map((year) => (
       <li class="list-none ml-0 pl-0 not-italic">
         <a
-          href={`/news/${year}`}
+          href={`/news/${year}/`}
           aria-current={current === year ? "page" : undefined}
           class:list={[
             "block rounded-md px-3 py-1 text-sm hover:no-underline",

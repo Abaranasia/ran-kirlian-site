@@ -1,20 +1,27 @@
 ---
-import { getEntry } from "astro:content";
 import { Image } from "astro:assets";
 import MainLayout from "@layouts/MainLayout.astro";
+import { getProfile } from "@utils/profile";
+import { toOgImage } from "@utils/og-image";
+import { artistJsonLd, breadcrumbJsonLd, firstSentence, profilePageJsonLd, truncate } from "@utils/seo";
 
-const profile = await getEntry("profile", "ran-kirlian");
-if (!profile) {
-  throw new Error('Missing profile entry "ran-kirlian" in src/content/profile.json');
-}
+const profile = await getProfile();
 const { name, tagline, bio, photo } = profile.data;
+const site = Astro.site!;
+const jsonLd = [
+  profilePageJsonLd(Astro.url.pathname, site),
+  artistJsonLd({ profile, site, imageUrl: photo ? (await toOgImage(photo, site)).url : undefined }),
+  breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "About", path: Astro.url.pathname }], site),
+];
 // Blank lines in the bio separate paragraphs.
 const paragraphs = bio.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean);
 ---
 
 <MainLayout
   title={`About | ${name}`}
-  description={`About ${name}: ${tagline.toLowerCase()}.`}
+  description={truncate(firstSentence(bio))}
+  type="profile"
+  jsonLd={jsonLd}
 >
   <h1>{name}</h1>
   <p class="text-xl text-slate-300">{tagline}</p>

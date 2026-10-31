@@ -26,11 +26,12 @@ interface Props {
 }
 
 const { year, years, items } = Astro.props;
+const itemCount = `${items.length} ${items.length === 1 ? "update" : "updates"}`;
 ---
 
 <MainLayout
   title={`News from ${year} | Ran Kirlian`}
-  description={`Ran Kirlian news archive: releases, videos and other music activity from ${year}.`}
+  description={`News from ${year}: ${itemCount} on Ran Kirlian's releases, videos and other music activity.`}
 >
   <h1>News from {year}</h1>
 

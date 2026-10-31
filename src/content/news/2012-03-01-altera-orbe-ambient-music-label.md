@@ -14,8 +14,8 @@ In order to show some of the music we are releasing in Antera Orbe we've created
 
 As metioned in the previous entry, **[Dissolution](http://www.facebook.com/AlteraOrbe)** can now be purchased in variety of ways: as a **limited CDr edition**, as digital download in **FLAC loseless format** and **MP3/256kbps** format, all three available at [Altera Orbe ambient music label and store](http://www.alteraorbe.com). It can also be download for free at [Jamendo](http://www.jamendo.com/es/album/54702) in MP3/192kbps format. The limited CDr edition is only a 25 units run, so hurry up to get your copy!
 
-We've also re-released my two album compilations from year 2007 named **[Selected Works I](/albums/selected-works-i)** (tribal-ambient music) and **[Selected Works II](/albums/selected-works-ii)** (ethereal and textures). While they will keep available from [Jamendo](http://www.jamendo.com/es/artist/Ran_Kirlian_(2)) in mp3/192kbps as free downloads, the new editions have been remastered, remixed and sound enhanced and also includes booklets with print ready quality. They can be found in FLAC loseless format at **5.00€** each one or in MP3 format at 256kbps on **3.00€**.
+We've also re-released my two album compilations from year 2007 named **[Selected Works I](/albums/selected-works-i/)** (tribal-ambient music) and **[Selected Works II](/albums/selected-works-ii/)** (ethereal and textures). While they will keep available from [Jamendo](http://www.jamendo.com/es/artist/Ran_Kirlian_(2)) in mp3/192kbps as free downloads, the new editions have been remastered, remixed and sound enhanced and also includes booklets with print ready quality. They can be found in FLAC loseless format at **5.00€** each one or in MP3 format at 256kbps on **3.00€**.
 
-[Selected Works Vols. I](/albums/selected-works-i)
+[Selected Works Vols. I](/albums/selected-works-i/)
 
-[Selected Works Vols. II](/albums/selected-works-ii)
+[Selected Works Vols. II](/albums/selected-works-ii/)

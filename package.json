@@ -7,10 +7,12 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "redirects:legacy": "node scripts/generate-legacy-redirects.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.1.2",
+    "@astrojs/sitemap": "^3.7.4",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.4.4",
     "simple-icons": "^16.36.0",

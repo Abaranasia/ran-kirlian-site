@@ -1,10 +1,10 @@
 ---
-import { getEntry } from "astro:content";
 import { siteConfig } from "@config/site-config";
 import { isActiveNavItem, mainNavigation } from "@config/navigation";
+import { getProfile } from "@utils/profile";
 
-const profile = await getEntry("profile", "ran-kirlian");
-const items = mainNavigation(profile?.data.bandcampUrl ?? "https://rankirlian.bandcamp.com");
+const profile = await getProfile();
+const items = mainNavigation(profile.data.bandcampUrl);
 const { pathname } = Astro.url;
 ---
 <header class="flex flex-col gap-4 py-6 md:flex-row md:items-center md:justify-between md:py-7">

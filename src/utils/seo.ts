@@ -2,6 +2,7 @@ import type { CollectionEntry } from "astro:content";
 import { siteConfig } from "@config/site-config";
 import { isoDate } from "@utils/dates";
 import { displayTitle } from "@utils/releases";
+import { pluralize, plainTextExcerpt, truncate } from "@utils/text";
 
 type AlbumEntry = CollectionEntry<"albums">;
 type ProfileEntry = CollectionEntry<"profile">;
@@ -36,39 +37,6 @@ export const toIsoDuration = (length: string): string => {
     return `PT${parts.join("")}`;
 };
 
-// Shortens text at a word boundary, adding an ellipsis when something was cut.
-export const truncate = (text: string, maxLength = DESCRIPTION_MAX_LENGTH): string => {
-    if (text.length <= maxLength) return text;
-    const cut = text.slice(0, maxLength - 1);
-    const lastSpace = cut.lastIndexOf(" ");
-    return `${(lastSpace > maxLength / 2 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.-]+$/, "")}…`;
-};
-
-// Plain text from the opening paragraphs of a Markdown/MDX body, for meta descriptions.
-export const plainTextExcerpt = (markdown: string | undefined, maxLength = DESCRIPTION_MAX_LENGTH): string => {
-    if (!markdown) return "";
-    const text = markdown
-        // Only the content before the first heading (e.g. "## Credits") describes the release.
-        .split(/^#{1,6}\s/m)[0]
-        .replace(/^\s*(import|export)\s.*$/gm, "")
-        .replace(/```[\s\S]*?```/g, "")
-        .replace(/<[^>]+>/g, " ")
-        .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
-        .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-        .replace(/`([^`]*)`/g, "$1")
-        .replace(/(\*{1,3}|_{1,3})(\S[\s\S]*?\S|\S)\1/g, "$2")
-        .replace(/^\s*(>|[-*+]|\d+\.)\s+/gm, "")
-        .replace(/\s+/g, " ")
-        .trim();
-    return truncate(text, maxLength);
-};
-
-// First sentence of a text, e.g. the opening sentence of the bio.
-export const firstSentence = (text: string): string => {
-    const match = /^[\s\S]*?[.!?](?=\s|$)/.exec(text.trim());
-    return (match ? match[0] : text).trim();
-};
-
 const durationLabel = (length: string): string => {
     const [minutes] = length.split(":").map(Number);
     return `${minutes} minutes`;
@@ -81,12 +49,19 @@ export const albumDescription = (album: AlbumEntry): string => {
     if (excerpt) return `${prefix}${excerpt}`;
     const { author, releaseDate, year, tracks, duration } = album.data;
     const released = releaseDate ? isoDate(releaseDate) : String(year);
-    const trackCount = `${tracks.length} ${tracks.length === 1 ? "track" : "tracks"}`;
-    return truncate(`${displayTitle(album)} by ${author}, released ${released}. ${trackCount}, ${durationLabel(duration)}.`);
+    const trackCount = pluralize(tracks.length, "track");
+    return truncate(
+        `${displayTitle(album)} by ${author}, released ${released}. ${trackCount}, ${durationLabel(duration)}.`,
+        DESCRIPTION_MAX_LENGTH
+    );
 };
 
-// "2000–2026", or a single year when all releases share it.
+// "<title> | <site title>", the title format shared by every page.
+export const pageTitle = (title: string): string => `${title} | ${siteConfig.title}`;
+
+// "2000–2026", a single year when all releases share it, or "" when there are no releases.
 export const yearRange = (albums: AlbumEntry[]): string => {
+    if (albums.length === 0) return "";
     const years = albums.map((album) => album.data.year);
     const first = Math.min(...years);
     const last = Math.max(...years);

@@ -3,14 +3,15 @@ import { getCollection } from "astro:content";
 import ReleasesLayout from "@components/ReleasesLayout.astro";
 import MainLayout from "@layouts/MainLayout.astro";
 import { sortByReleaseDate } from "@utils/releases";
-import { yearRange } from "@utils/seo";
+import { pageTitle, yearRange } from "@utils/seo";
 
 const albums = sortByReleaseDate(await getCollection('albums'));
-const description = `All ${albums.length} releases by Ran Kirlian, ${yearRange(albums)}: full-length albums, mini-albums and the Ethernautica and Many Futures series.`;
+const years = yearRange(albums);
+const description = `All ${albums.length} releases by Ran Kirlian${years ? `, ${years}` : ""}: full-length albums, mini-albums and the Ethernautica and Many Futures series.`;
 ---
 
 <MainLayout
-  title="Releases | Ran Kirlian"
+  title={pageTitle("Releases")}
   description={description}
 >
   <h1 class="mt-6 mb-0 lg:mt-10">Releases</h1>

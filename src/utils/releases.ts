@@ -1,4 +1,5 @@
 import type { CollectionEntry } from "astro:content";
+import { pluralize } from "@utils/text";
 
 type AlbumEntry = CollectionEntry<"albums">;
 
@@ -31,4 +32,4 @@ export const releaseTypeLabels: Record<AlbumEntry["data"]["type"], string> = {
 };
 
 export const trackCountLabel = (album: AlbumEntry): string =>
-    `${album.data.tracks.length} ${album.data.tracks.length === 1 ? "track" : "tracks"}`;
+    pluralize(album.data.tracks.length, "track");

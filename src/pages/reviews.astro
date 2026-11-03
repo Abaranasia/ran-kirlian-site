@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import MainLayout from "@layouts/MainLayout.astro";
 import ReviewItem from "@components/ReviewItem.astro";
 import { sortReviewsByDate } from "@utils/reviews";
+import { pageTitle } from "@utils/seo";
 
 const reviews = sortReviewsByDate(await getCollection("reviews"));
 const publications = [...new Set(reviews.map((review) => review.data.publication))];
@@ -11,7 +12,7 @@ const description = `${reviews.length} press reviews of Ran Kirlian's ambient al
 ---
 
 <MainLayout
-  title="Reviews | Ran Kirlian"
+  title={pageTitle("Reviews")}
   description={description}
 >
   <h1 class="mt-6 mb-0 lg:mt-10">Reviews</h1>

@@ -1,0 +1,24 @@
+import type { CollectionEntry } from "astro:content";
+
+type AlbumEntry = CollectionEntry<"albums">;
+type NewsEntry = CollectionEntry<"news">;
+type ReviewEntry = CollectionEntry<"reviews">;
+
+// Plain objects standing in for content collection entries; only the fields the helpers read are modelled.
+export const makeAlbum = (
+    data: Partial<AlbumEntry["data"]> & { title: string; year: number },
+    body?: string
+): AlbumEntry =>
+    ({
+        id: data.title.toLowerCase().replace(/\s+/g, "-"),
+        body,
+        data: { collaborators: [], tracks: [], duration: "0:00", type: "album", ...data },
+    }) as unknown as AlbumEntry;
+
+export const makeNews = (data: { title: string; date: Date }): NewsEntry =>
+    ({ id: data.title, data }) as unknown as NewsEntry;
+
+export const makeReview = (data: { publication: string; date: Date }): ReviewEntry =>
+    ({ id: data.publication, data }) as unknown as ReviewEntry;
+
+export const utcDate = (iso: string): Date => new Date(`${iso}T00:00:00Z`);

@@ -1,5 +1,8 @@
+const artistName = "Ran Kirlian";
+
 export const siteConfig = {
-    title: "Ran Kirlian",
+    artistName,
+    title: artistName,
     description: "Official website of Ran Kirlian, ambient musician and sound sculptor based in Valencia, Spain.",
     location: "Valencia, Spain",
     genres: ["Ambient", "Dark ambient", "Tribal ambient"],

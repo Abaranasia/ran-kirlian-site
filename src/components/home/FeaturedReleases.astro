@@ -1,18 +1,37 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import Album from "@components/Album.astro";
+import AlbumCover from "@components/AlbumCover.astro";
+import { displayTitle, releaseTypeLabels } from "@utils/releases";
 
 interface Props {
+  // Featured releases besides the one shown in the hero.
   albums: CollectionEntry<"albums">[];
 }
 
 const { albums } = Astro.props;
 ---
 {albums.length > 0 && (
-  <section aria-labelledby="home-featured">
-    <h2 id="home-featured">Featured releases</h2>
-    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:max-w-3xl sm:mx-auto">
-      {albums.map((album) => <Album album={album} transition={false} />)}
-    </div>
+  <section aria-labelledby="home-featured" class="pb-16">
+    <h2 id="home-featured" class="mt-0 mb-7">Featured releases</h2>
+    <ul class="grid gap-5 md:grid-cols-2">
+      {albums.map((album) => {
+        const title = displayTitle(album);
+        return (
+          <li class="list-none ml-0 pl-0">
+            <a
+              href={`/albums/${album.id}/`}
+              class="group flex items-center gap-5 rounded-[10px] border border-hairline bg-surface p-4 text-ink hover:border-hairline-strong hover:text-ink hover:no-underline sm:p-5"
+            >
+              <AlbumCover album={album} alt={title} width={280} class="w-28 shrink-0 sm:w-36" />
+              <span class="flex flex-col gap-2">
+                <span class="eyebrow">{releaseTypeLabels[album.data.type]} &middot; {album.data.year}</span>
+                <span class="font-display text-xl leading-snug group-hover:text-accent-hover sm:text-2xl">{title}</span>
+                <span class="text-sm text-muted">{album.data.duration}</span>
+              </span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
   </section>
 )}

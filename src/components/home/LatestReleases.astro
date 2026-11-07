@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import Album from "@components/Album.astro";
+import { releaseCategories } from "@config/release-categories";
 
 interface Props {
   albums: CollectionEntry<"albums">[];
@@ -8,10 +9,25 @@ interface Props {
 
 const { albums } = Astro.props;
 ---
-<section aria-labelledby="home-latest-releases">
-  <h2 id="home-latest-releases">Latest releases</h2>
-  <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
-    {albums.map((album) => <Album album={album} />)}
+<section aria-labelledby="home-latest-releases" class="pb-20">
+  <div class="mb-7 flex flex-wrap items-center justify-between gap-4">
+    <h2 id="home-latest-releases" class="my-0">Latest transmissions</h2>
+    <nav aria-label="Browse releases by category">
+      <ul class="flex flex-wrap gap-2">
+        <li class="list-none ml-0 pl-0"><a href="/releases/" class="pill pill-outline">All releases</a></li>
+        {releaseCategories.map((category) => (
+          <li class="list-none ml-0 pl-0">
+            <a href={`/releases/${category.slug}/`} class="pill pill-outline">{category.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   </div>
-  <p><a href="/releases">See all releases</a></p>
+  <ul class="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
+    {albums.map((album) => (
+      <li class="list-none ml-0 pl-0">
+        <Album album={album} />
+      </li>
+    ))}
+  </ul>
 </section>

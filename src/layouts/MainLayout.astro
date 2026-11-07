@@ -3,35 +3,42 @@ import { ClientRouter } from 'astro:transitions';
 import { siteConfig } from '@config/site-config';
 import SiteHeader from '@components/SiteHeader.astro';
 import SiteFooter from '@components/SiteFooter.astro';
+import SeoHead, { type Props as SeoProps } from '@components/SeoHead.astro';
 import '../styles/styles.css';
 
-interface Props {
+type Props = Omit<SeoProps, 'title' | 'description'> & {
     title?: string;
     description?: string;
-}
-const { title, description = siteConfig.description } = Astro.props;
+};
+const { title = siteConfig.title, description = siteConfig.description, ...seo } = Astro.props;
 ---
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content={description}>
-    <title>{title}</title>
+    <SeoHead title={title} description={description} {...seo} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@300;400;500&display=swap">
     <ClientRouter />
 </head>
-<body class="bg-gray-900">
+<body class="bg-ground text-ink">
     <a
         href="#content"
-        class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:text-gray-900"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-ground"
     >
         Skip to content
     </a>
-    <div class="max-w-7xl m-auto text-white p-2">
-        <SiteHeader />
-        <main id="content" tabindex="-1" class="mb-10">
-            <slot />
-        </main>
-        <SiteFooter />
+    <!-- `isolate` keeps an optional page backdrop (e.g. a blurred cover) above the body background. -->
+    <div class="relative isolate overflow-x-clip">
+        <slot name="backdrop" />
+        <div class="mx-auto max-w-7xl px-4 sm:px-6">
+            <SiteHeader />
+            <main id="content" tabindex="-1" class="mb-10 focus:outline-none">
+                <slot />
+            </main>
+            <SiteFooter />
+        </div>
     </div>
 </body>
 </html>

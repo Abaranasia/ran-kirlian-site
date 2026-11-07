@@ -1,0 +1,29 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  // Cover blown up and blurred into a decorative "nebula" behind the page header.
+  image: ImageMetadata;
+  class?: string;
+}
+
+const { image, class: className } = Astro.props;
+// Heavily blurred, so a small rendition is enough.
+const BACKDROP_WIDTH = 480;
+---
+<div
+  aria-hidden="true"
+  class:list={["pointer-events-none absolute inset-x-0 top-0 -z-10 overflow-hidden", className]}
+>
+  <Image
+    class="absolute -inset-[120px] h-[calc(100%+240px)] w-[calc(100%+240px)] max-w-none object-cover opacity-55 blur-[80px] saturate-120"
+    src={image}
+    alt=""
+    width={Math.min(BACKDROP_WIDTH, image.width)}
+    quality="low"
+    loading="eager"
+  />
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_30%,rgb(7_9_13/0.1)_0%,rgb(7_9_13/0.75)_60%,var(--color-ground)_100%)]"></div>
+  <div class="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-b from-transparent to-ground"></div>
+</div>

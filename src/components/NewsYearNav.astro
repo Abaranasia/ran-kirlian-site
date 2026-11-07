@@ -6,33 +6,22 @@ interface Props {
 }
 
 const { years, current } = Astro.props;
+const links = [
+  { href: "/news/", label: "Latest", active: current === undefined },
+  ...years.map((year) => ({ href: `/news/${year}/`, label: String(year), active: current === year })),
+];
 ---
-<nav aria-label="News archive">
-  <h2 class="text-xl">Archive</h2>
+<nav aria-labelledby="news-archive" class="mt-12 border-t border-hairline pt-8">
+  <h2 id="news-archive" class="mt-0 mb-5 text-xl lg:text-2xl">Archive</h2>
   <ul class="flex flex-wrap gap-2">
-    <li class="list-none ml-0 pl-0 not-italic">
-      <a
-        href="/news"
-        aria-current={current === undefined ? "page" : undefined}
-        class:list={[
-          "block rounded-md px-3 py-1 text-sm hover:no-underline",
-          current === undefined ? "bg-gray-700 text-white font-semibold" : "text-gray-300 hover:bg-gray-800 hover:text-white",
-        ]}
-      >
-        Latest
-      </a>
-    </li>
-    {years.map((year) => (
-      <li class="list-none ml-0 pl-0 not-italic">
+    {links.map((link) => (
+      <li class="list-none ml-0 pl-0">
         <a
-          href={`/news/${year}`}
-          aria-current={current === year ? "page" : undefined}
-          class:list={[
-            "block rounded-md px-3 py-1 text-sm hover:no-underline",
-            current === year ? "bg-gray-700 text-white font-semibold" : "text-gray-300 hover:bg-gray-800 hover:text-white",
-          ]}
+          href={link.href}
+          aria-current={link.active ? "page" : undefined}
+          class:list={["pill tabular-nums", link.active ? "pill-active" : "pill-outline"]}
         >
-          {year}
+          {link.label}
         </a>
       </li>
     ))}

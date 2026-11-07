@@ -5,8 +5,12 @@ import MainLayout from "@layouts/MainLayout.astro";
 <MainLayout
   title="Page not found | Ran Kirlian"
   description="The requested page could not be found."
+  noindex
 >
-  <h1>Page not found</h1>
-  <p>Sorry, the page you are looking for does not exist or has been moved.</p>
-  <p><a href="/">Go to the home page</a></p>
+  <section class="py-16 md:py-24">
+    <p class="eyebrow my-0">Error 404</p>
+    <h1 class="mt-4 mb-0">Page not found</h1>
+    <p class="max-w-prose text-muted">Sorry, the page you are looking for does not exist or has been moved.</p>
+    <p class="mb-0"><a href="/" class="pill pill-solid min-h-12 px-6 text-base">Go to the home page</a></p>
+  </section>
 </MainLayout>

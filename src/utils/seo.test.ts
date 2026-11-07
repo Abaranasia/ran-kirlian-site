@@ -5,12 +5,13 @@ import {
     albumDescription,
     breadcrumbJsonLd,
     jsonLdDocument,
+    metaDescription,
     pageTitle,
     serializeJsonLd,
     toIsoDuration,
     yearRange,
 } from "./seo";
-import { makeAlbum, utcDate } from "./test-fixtures";
+import { makeAlbum, makeTrack, utcDate } from "./test-fixtures";
 
 describe("toIsoDuration", () => {
     it.each([
@@ -58,6 +59,18 @@ describe("yearRange", () => {
     });
 });
 
+describe("metaDescription", () => {
+    it("returns short text unchanged", () => {
+        expect(metaDescription("A short description.")).toBe("A short description.");
+    });
+
+    it("truncates long text to the maximum description length", () => {
+        const description = metaDescription("word ".repeat(100));
+        expect(description.length).toBeLessThanOrEqual(DESCRIPTION_MAX_LENGTH);
+        expect(description.endsWith("…")).toBe(true);
+    });
+});
+
 describe("albumDescription", () => {
     it("leads with the title and year, followed by the body excerpt", () => {
         const album = makeAlbum({ title: "Cosmos", year: 2010 }, "A deep ambient journey.\n\n## Credits\n\nSomeone.");
@@ -80,7 +93,7 @@ describe("albumDescription", () => {
             year: 2010,
             author: "Ran Kirlian",
             releaseDate: utcDate("2010-05-04"),
-            tracks: [{ title: "One", length: "3:00" }, { title: "Two", length: "4:00" }] as never,
+            tracks: [makeTrack("One", "3:00"), makeTrack("Two", "4:00")],
             duration: "42:10",
         });
         expect(albumDescription(album)).toBe("Cosmos by Ran Kirlian, released 2010-05-04. 2 tracks, 42 minutes.");
@@ -91,7 +104,7 @@ describe("albumDescription", () => {
             title: "Solo",
             year: 1999,
             author: "Ran Kirlian",
-            tracks: [{ title: "One", length: "3:00" }] as never,
+            tracks: [makeTrack("One", "3:00")],
             duration: "3:00",
         });
         expect(albumDescription(album)).toBe("Solo by Ran Kirlian, released 1999. 1 track, 3 minutes.");

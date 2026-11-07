@@ -2,12 +2,13 @@
 import { getCollection } from "astro:content";
 import ReleasesLayout from "@components/ReleasesLayout.astro";
 import MainLayout from "@layouts/MainLayout.astro";
+import { siteConfig } from "@config/site-config";
 import { sortByReleaseDate } from "@utils/releases";
 import { pageTitle, yearRange } from "@utils/seo";
 
 const albums = sortByReleaseDate(await getCollection('albums'));
 const years = yearRange(albums);
-const description = `All ${albums.length} releases by Ran Kirlian${years ? `, ${years}` : ""}: full-length albums, mini-albums and the Ethernautica and Many Futures series.`;
+const description = `All ${albums.length} releases by ${siteConfig.artistName}${years ? `, ${years}` : ""}: full-length albums, mini-albums and the Ethernautica and Many Futures series.`;
 ---
 
 <MainLayout

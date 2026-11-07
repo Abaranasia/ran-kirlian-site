@@ -3,12 +3,13 @@ import { getCollection } from "astro:content";
 import MainLayout from "@layouts/MainLayout.astro";
 import ReviewItem from "@components/ReviewItem.astro";
 import { sortReviewsByDate } from "@utils/reviews";
+import { siteConfig } from "@config/site-config";
 import { pageTitle } from "@utils/seo";
 
 const reviews = sortReviewsByDate(await getCollection("reviews"));
 const publications = [...new Set(reviews.map((review) => review.data.publication))];
 const featuredPublications = new Intl.ListFormat("en", { type: "conjunction" }).format(publications.slice(0, 3));
-const description = `${reviews.length} press reviews of Ran Kirlian's ambient albums from ${publications.length} publications, including ${featuredPublications}.`;
+const description = `${reviews.length} press reviews of ${siteConfig.artistName}'s ambient albums from ${publications.length} publications, including ${featuredPublications}.`;
 ---
 
 <MainLayout

@@ -3,6 +3,8 @@ import type { CollectionEntry } from "astro:content";
 type AlbumEntry = CollectionEntry<"albums">;
 type NewsEntry = CollectionEntry<"news">;
 type ReviewEntry = CollectionEntry<"reviews">;
+type AlbumCover = AlbumEntry["data"]["image"];
+type AlbumTrack = AlbumEntry["data"]["tracks"][number];
 
 // Plain objects standing in for content collection entries; only the fields the helpers read are modelled.
 export const makeAlbum = (
@@ -20,5 +22,9 @@ export const makeNews = (data: { title: string; date: Date }): NewsEntry =>
 
 export const makeReview = (data: { publication: string; date: Date }): ReviewEntry =>
     ({ id: data.publication, data }) as unknown as ReviewEntry;
+
+export const makeCover = (width: number): AlbumCover => ({ src: "/cover.jpg", width, height: width, format: "jpg" });
+
+export const makeTrack = (title = "Track", length = "3:00"): AlbumTrack => ({ title, length });
 
 export const utcDate = (iso: string): Date => new Date(`${iso}T00:00:00Z`);

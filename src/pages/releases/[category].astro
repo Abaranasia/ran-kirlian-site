@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import ReleasesLayout from "@components/ReleasesLayout.astro";
 import MainLayout from "@layouts/MainLayout.astro";
 import { releaseCategories, type ReleaseCategory } from "@config/release-categories";
+import { siteConfig } from "@config/site-config";
 import { sortByReleaseDate } from "@utils/releases";
 import { pageTitle, yearRange } from "@utils/seo";
 import { pluralize } from "@utils/text";
@@ -24,7 +25,7 @@ const albums = sortByReleaseDate(
 );
 const years = yearRange(albums);
 const releaseCount = pluralize(albums.length, "release");
-const description = `${category.label} by ambient musician Ran Kirlian: ${releaseCount}${years ? ` from ${years}` : ""}, with tracklists, credits and reviews.`;
+const description = `${category.label} by ambient musician ${siteConfig.artistName}: ${releaseCount}${years ? ` from ${years}` : ""}, with tracklists, credits and reviews.`;
 ---
 
 <MainLayout title={pageTitle(category.label)} description={description}>

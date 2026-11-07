@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { MIN_ALBUM_COVER_WIDTH, displayTitle, isLowResCover, sortByReleaseDate, trackCountLabel } from "./releases";
-import { makeAlbum, utcDate } from "./test-fixtures";
+import { makeAlbum, makeCover, makeTrack, utcDate } from "./test-fixtures";
 
 const titles = (albums: ReturnType<typeof makeAlbum>[]) => albums.map((album) => album.data.title);
 
@@ -58,7 +58,7 @@ describe("sortByReleaseDate", () => {
 });
 
 describe("isLowResCover", () => {
-    const withWidth = (width: number) => makeAlbum({ title: "A", year: 2000, image: { width } as never });
+    const withWidth = (width: number) => makeAlbum({ title: "A", year: 2000, image: makeCover(width) });
 
     it("flags covers at or below the minimum width", () => {
         expect(isLowResCover(withWidth(MIN_ALBUM_COVER_WIDTH))).toBe(true);
@@ -72,7 +72,7 @@ describe("isLowResCover", () => {
 
 describe("trackCountLabel", () => {
     const withTracks = (count: number) =>
-        makeAlbum({ title: "A", year: 2000, tracks: Array.from({ length: count }, () => ({})) as never });
+        makeAlbum({ title: "A", year: 2000, tracks: Array.from({ length: count }, () => makeTrack()) });
 
     it("pluralizes the track count", () => {
         expect(trackCountLabel(withTracks(1))).toBe("1 track");

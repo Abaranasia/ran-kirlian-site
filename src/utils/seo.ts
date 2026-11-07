@@ -12,6 +12,9 @@ export type JsonLd = Record<string, unknown>;
 
 export const DESCRIPTION_MAX_LENGTH = 155;
 
+// Text shortened to fit a meta description.
+export const metaDescription = (text: string): string => truncate(text, DESCRIPTION_MAX_LENGTH);
+
 export const absoluteUrl = (path: string, site: URL | string): string => new URL(path, site).href;
 
 // Stable identifier shared by every JSON-LD node that refers to the artist.
@@ -50,9 +53,8 @@ export const albumDescription = (album: AlbumEntry): string => {
     const { author, releaseDate, year, tracks, duration } = album.data;
     const released = releaseDate ? isoDate(releaseDate) : String(year);
     const trackCount = pluralize(tracks.length, "track");
-    return truncate(
-        `${displayTitle(album)} by ${author}, released ${released}. ${trackCount}, ${durationLabel(duration)}.`,
-        DESCRIPTION_MAX_LENGTH
+    return metaDescription(
+        `${displayTitle(album)} by ${author}, released ${released}. ${trackCount}, ${durationLabel(duration)}.`
     );
 };
 

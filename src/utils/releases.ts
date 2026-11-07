@@ -19,8 +19,8 @@ export const sortByReleaseDate = (albums: AlbumEntry[]): AlbumEntry[] =>
         (a, b) => releaseTime(b) - releaseTime(a) || a.data.title.localeCompare(b.data.title)
     );
 
-// Covers at or below this width are legacy low-resolution images. They build with a
-// warning and render smaller, over a blurred copy of themselves, instead of upscaled.
+// Covers at or below this width fail the build. AlbumCover still renders any that slip
+// through smaller, over a blurred copy of themselves, instead of upscaled.
 export const MIN_ALBUM_COVER_WIDTH = 500;
 
 export const isLowResCover = (album: AlbumEntry): boolean =>

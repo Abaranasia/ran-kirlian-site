@@ -16,8 +16,7 @@ import NebulaBackdrop from "@components/NebulaBackdrop.astro";
     const albums = await getCollection('albums')
     for (const album of albums) {
         if (isLowResCover(album)) {
-            // Some legacy releases only have low-resolution covers; warn instead of failing the build.
-            console.warn(`Album "${album.id}" cover should be wider than ${MIN_ALBUM_COVER_WIDTH}px`);
+            throw new Error(`Album "${album.id}" cover should be wider than ${MIN_ALBUM_COVER_WIDTH}px`);
         }
     }
     return albums.map((album) => (

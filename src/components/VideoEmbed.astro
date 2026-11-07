@@ -1,0 +1,80 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+import { resolveVideo } from "@utils/video";
+
+interface Props {
+  url: string;
+  title?: string;
+  /** Local poster image; required for Vimeo, optional override for YouTube. */
+  poster?: ImageMetadata;
+}
+
+const providerNames = { youtube: "YouTube", vimeo: "Vimeo" } as const;
+
+const { url, title, poster } = Astro.props;
+const video = resolveVideo(url);
+if (!video) {
+  throw new Error(`VideoEmbed: "${url}" is not a supported YouTube or Vimeo URL.`);
+}
+if (!poster && !video.thumbnail) {
+  throw new Error(`VideoEmbed: "${url}" needs a local \`poster\` image (${providerNames[video.provider]} has no predictable thumbnail URL).`);
+}
+const videoTitle = title ?? `${providerNames[video.provider]} video`;
+const label = title ? `Play video: ${title}` : "Play video";
+const imageClass = "size-full object-cover opacity-90 transition-opacity group-hover:opacity-100";
+---
+<figure class="my-0">
+  <a
+    href={url}
+    class="group relative block aspect-video overflow-hidden rounded-md bg-surface hover:no-underline"
+    data-video-facade
+    data-embed-url={video.embedUrl}
+    data-video-title={videoTitle}
+  >
+    {poster ? (
+      <Image class={imageClass} src={poster} alt="" width={720} loading="lazy" />
+    ) : (
+      <img
+        class={imageClass}
+        src={video.thumbnail}
+        alt=""
+        width="480"
+        height="360"
+        loading="lazy"
+        decoding="async"
+      />
+    )}
+    <span
+      class="absolute top-1/2 left-1/2 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-ground/75 text-ink transition-colors group-hover:bg-accent group-hover:text-ground"
+      aria-hidden="true"
+    >
+      <svg class="ml-1 size-7" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+    </span>
+    <span class="sr-only">{label}</span>
+  </a>
+  {title && <figcaption class="mt-2 text-sm text-muted">{title}</figcaption>}
+</figure>
+
+<script>
+  // Progressive enhancement: swap the poster link for the embedded player on click.
+  document.addEventListener("click", (event) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+    const facade = (event.target as Element | null)?.closest<HTMLAnchorElement>("a[data-video-facade]");
+    const embedUrl = facade?.dataset.embedUrl;
+    if (!facade || !embedUrl) {
+      return;
+    }
+    event.preventDefault();
+    const iframe = document.createElement("iframe");
+    iframe.src = embedUrl;
+    iframe.title = facade.dataset.videoTitle ?? "Video";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture";
+    iframe.allowFullscreen = true;
+    iframe.className = "block aspect-video w-full rounded-md border-0 bg-surface";
+    facade.replaceWith(iframe);
+    iframe.focus();
+  });
+</script>

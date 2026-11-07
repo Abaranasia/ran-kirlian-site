@@ -17,8 +17,9 @@ export const makeAlbum = (
         data: { collaborators: [], tracks: [], duration: "0:00", type: "album", ...data },
     }) as unknown as AlbumEntry;
 
-export const makeNews = (data: { title: string; date: Date }): NewsEntry =>
-    ({ id: data.title, data }) as unknown as NewsEntry;
+export const makeNews = (
+    data: { title: string; date: Date } & Partial<Pick<NewsEntry["data"], "status" | "expected">>
+): NewsEntry => ({ id: data.title, data: { status: "info", ...data } }) as unknown as NewsEntry;
 
 export const makeReview = (data: { publication: string; date: Date }): ReviewEntry =>
     ({ id: data.publication, data }) as unknown as ReviewEntry;

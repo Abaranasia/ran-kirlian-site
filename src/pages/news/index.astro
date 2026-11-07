@@ -5,12 +5,16 @@ import NewsItem from "@components/NewsItem.astro";
 import NewsYearNav from "@components/NewsYearNav.astro";
 import { siteConfig } from "@config/site-config";
 import { pageTitle } from "@utils/seo";
-import { newsYears, sortNewsByDate } from "@utils/news";
+import { newsYears, sortNewsByDate, upcomingReleases } from "@utils/news";
 
 const NEWS_PAGE_SIZE = 10;
 
 const news = await getCollection("news");
-const latest = sortNewsByDate(news).slice(0, NEWS_PAGE_SIZE);
+const upcoming = upcomingReleases(news);
+// Upcoming releases get their own section, so they are left out of the latest list.
+const latest = sortNewsByDate(news)
+  .filter((item) => !upcoming.includes(item))
+  .slice(0, NEWS_PAGE_SIZE);
 ---
 
 <MainLayout
@@ -18,6 +22,13 @@ const latest = sortNewsByDate(news).slice(0, NEWS_PAGE_SIZE);
   description={`Latest news and upcoming releases from ambient musician ${siteConfig.artistName}.`}
 >
   <h1 class="mt-6 mb-0 lg:mt-10">News and upcoming releases</h1>
+
+  {upcoming.length > 0 && (
+    <section aria-labelledby="upcoming-releases">
+      <h2 id="upcoming-releases" class="mt-10 mb-0">Upcoming releases</h2>
+      {upcoming.map((item) => <NewsItem item={item} headingLevel={3} />)}
+    </section>
+  )}
 
   <section aria-label="Latest news">
     {latest.map((item) => <NewsItem item={item} />)}

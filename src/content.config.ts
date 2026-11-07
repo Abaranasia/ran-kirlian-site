@@ -1,6 +1,7 @@
 import { defineCollection, reference } from "astro:content";
 import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
+import { siteConfig } from "@config/site-config";
 
 const trackLengthRegex = /^\d{1,3}:\d{2}$/;
 
@@ -43,7 +44,7 @@ const newsCollection = defineCollection({
     schema: ({ image }) => z.object({
         title: z.string(),
         date: z.coerce.date(),
-        artist: z.string().default("Ran Kirlian"),
+        artist: z.string().default(siteConfig.artistName),
         cover: image().optional(),
         status: z.enum(["available", "upcoming", "info"]).default("info"),
         link: z.url().optional(),

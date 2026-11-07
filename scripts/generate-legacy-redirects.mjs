@@ -2,16 +2,10 @@
 // Usage: pnpm redirects:legacy > legacy-redirects.json
 import { readdir, readFile } from "node:fs/promises";
 import { join, parse } from "node:path";
+import { slugify } from "./content-slug.mjs";
 
 const ALBUMS_DIR = "src/content/albums";
 const NEWS_DIR = "src/content/news";
-
-// Same id rule as Astro's glob loader (github-slugger applied to the file name).
-const slugify = (value) =>
-  value
-    .toLowerCase()
-    .replace(/[^\p{L}\p{M}\p{N}\p{Pc}\- ]/gu, "")
-    .replace(/ /g, "-");
 
 const frontmatterValue = (source, key) => {
   const frontmatter = /^---\r?\n([\s\S]*?)\r?\n---/.exec(source)?.[1] ?? "";

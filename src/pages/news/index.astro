@@ -3,17 +3,19 @@ import { getCollection } from "astro:content";
 import MainLayout from "@layouts/MainLayout.astro";
 import NewsItem from "@components/NewsItem.astro";
 import NewsYearNav from "@components/NewsYearNav.astro";
+import { siteConfig } from "@config/site-config";
+import { pageTitle } from "@utils/seo";
 import { newsYears, sortNewsByDate } from "@utils/news";
 
-const LATEST_NEWS_COUNT = 10;
+const NEWS_PAGE_SIZE = 10;
 
 const news = await getCollection("news");
-const latest = sortNewsByDate(news).slice(0, LATEST_NEWS_COUNT);
+const latest = sortNewsByDate(news).slice(0, NEWS_PAGE_SIZE);
 ---
 
 <MainLayout
-  title="News | Ran Kirlian"
-  description="Latest news and upcoming releases from ambient musician Ran Kirlian."
+  title={pageTitle("News")}
+  description={`Latest news and upcoming releases from ambient musician ${siteConfig.artistName}.`}
 >
   <h1 class="mt-6 mb-0 lg:mt-10">News and upcoming releases</h1>
 

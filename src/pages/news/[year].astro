@@ -1,10 +1,13 @@
 ---
 import type { GetStaticPaths } from "astro";
 import { getCollection, type CollectionEntry } from "astro:content";
+import { siteConfig } from "@config/site-config";
 import MainLayout from "@layouts/MainLayout.astro";
 import NewsItem from "@components/NewsItem.astro";
 import NewsYearNav from "@components/NewsYearNav.astro";
 import { newsYear, newsYears, sortNewsByDate } from "@utils/news";
+import { pageTitle } from "@utils/seo";
+import { pluralize } from "@utils/text";
 
 export const getStaticPaths = (async () => {
   const news = await getCollection("news");
@@ -26,12 +29,12 @@ interface Props {
 }
 
 const { year, years, items } = Astro.props;
-const itemCount = `${items.length} ${items.length === 1 ? "update" : "updates"}`;
+const itemCount = pluralize(items.length, "update");
 ---
 
 <MainLayout
-  title={`News from ${year} | Ran Kirlian`}
-  description={`News from ${year}: ${itemCount} on Ran Kirlian's releases, videos and other music activity.`}
+  title={pageTitle(`News from ${year}`)}
+  description={`News from ${year}: ${itemCount} on ${siteConfig.artistName}'s releases, videos and other music activity.`}
 >
   <h1 class="mt-6 mb-0 lg:mt-10">News from {year}</h1>
 

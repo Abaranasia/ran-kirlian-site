@@ -3,7 +3,8 @@ import { Image } from "astro:assets";
 import MainLayout from "@layouts/MainLayout.astro";
 import { getProfile } from "@utils/profile";
 import { toOgImage } from "@utils/og-image";
-import { artistJsonLd, breadcrumbJsonLd, firstSentence, profilePageJsonLd, truncate } from "@utils/seo";
+import { artistJsonLd, breadcrumbJsonLd, metaDescription, profilePageJsonLd } from "@utils/seo";
+import { firstSentence } from "@utils/text";
 
 const profile = await getProfile();
 const { name, tagline, bio, photo } = profile.data;
@@ -19,7 +20,7 @@ const paragraphs = bio.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).fil
 
 <MainLayout
   title={`About | ${name}`}
-  description={truncate(firstSentence(bio))}
+  description={metaDescription(firstSentence(bio))}
   type="profile"
   jsonLd={jsonLd}
 >

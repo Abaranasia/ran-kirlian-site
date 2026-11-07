@@ -5,7 +5,7 @@ import { displayTitle, isLowResCover, MIN_ALBUM_COVER_WIDTH, releaseTypeLabels, 
 import { formatDate } from "@utils/dates";
 import { sortReviewsByDate } from "@utils/reviews";
 import { toOgImage } from "@utils/og-image";
-import { albumDescription, albumJsonLd, breadcrumbJsonLd } from "@utils/seo";
+import { albumDescription, albumJsonLd, breadcrumbJsonLd, pageTitle } from "@utils/seo";
 import MainLayout from "@layouts/MainLayout.astro";
 import Tracks from "@components/Tracks.astro";
 import ReviewItem from "@components/ReviewItem.astro";
@@ -58,7 +58,7 @@ const jsonLd = [
 
 ---
 <MainLayout
-    title={`${title} | Ran Kirlian`}
+    title={pageTitle(title)}
     description={albumDescription(album)}
     image={frontmatter.image}
     imageAlt={`Cover of ${title} by ${frontmatter.author}`}

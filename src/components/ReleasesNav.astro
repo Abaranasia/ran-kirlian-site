@@ -3,27 +3,37 @@ import { getCollection } from "astro:content";
 import { releaseCategories } from "@config/release-categories";
 
 interface Props {
-  // Active category slug; undefined means "All releases".
+  // Active category slug, or "compilations"; undefined means "All releases".
   current?: string;
 }
 
 const { current } = Astro.props;
 const albums = await getCollection("albums");
+const compilations = await getCollection("compilations");
 
 const links = [
-  { href: "/releases/", label: "All releases", count: albums.length, active: current === undefined },
+  { href: "/releases/", label: "All releases", count: albums.length, active: current === undefined, separated: false },
   ...releaseCategories.map((category) => ({
     href: `/releases/${category.slug}/`,
     label: category.label,
     count: albums.filter(category.matches).length,
     active: current === category.slug,
+    separated: false,
   })),
+  // Compilations are not releases, so they sit apart from the release categories.
+  {
+    href: "/releases/compilations/",
+    label: "Compilations",
+    count: compilations.length,
+    active: current === "compilations",
+    separated: true,
+  },
 ];
 ---
 <nav aria-label="Release categories">
   <ul class="flex flex-wrap gap-2 md:flex-col md:gap-1">
     {links.map((link) => (
-      <li class="list-none ml-0 pl-0">
+      <li class:list={["list-none ml-0 pl-0", link.separated && "md:mt-2 md:border-t md:border-hairline md:pt-3"]}>
         <a
           href={link.href}
           aria-current={link.active ? "page" : undefined}

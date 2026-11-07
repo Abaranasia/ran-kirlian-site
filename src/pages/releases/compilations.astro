@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import CompilationList from "@components/CompilationList.astro";
+import ReleasesLayout from "@components/ReleasesLayout.astro";
+import MainLayout from "@layouts/MainLayout.astro";
+import { siteConfig } from "@config/site-config";
+import { compilationYearRange, sortCompilationsByDate } from "@utils/compilations";
+import { pageTitle } from "@utils/seo";
+import { pluralize } from "@utils/text";
+
+const compilations = sortCompilationsByDate(await getCollection("compilations"));
+const years = compilationYearRange(compilations);
+const compilationCount = pluralize(compilations.length, "compilation");
+const description = `Various-artists compilations featuring tracks by ambient musician ${siteConfig.artistName}: ${compilationCount}${years ? ` from ${years}` : ""}.`;
+---
+
+<MainLayout title={pageTitle("Compilations")} description={description}>
+  <h1 class="mt-6 mb-0 lg:mt-10">Compilations</h1>
+  <p class="mt-3 mb-0 text-muted">Tracks contributed to various-artists compilations and label anthologies.</p>
+
+  <ReleasesLayout current="compilations">
+    <CompilationList compilations={compilations} />
+  </ReleasesLayout>
+</MainLayout>

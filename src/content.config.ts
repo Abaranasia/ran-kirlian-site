@@ -64,6 +64,22 @@ const reviewsCollection = defineCollection({
     }),
 });
 
+// Various-artists compilations that include Ran Kirlian tracks; kept apart from the releases.
+const compilationsCollection = defineCollection({
+    loader: glob({ pattern: "*.md", base: "./src/content/compilations" }),
+    schema: ({ image }) => z.object({
+        title: z.string(),
+        label: z.string(),
+        releaseDate: z.coerce.date(),
+        url: z.url(),
+        cover: image(),
+        tracks: z.array(z.object({
+            title: z.string(),
+            number: z.number().int().positive().optional(),
+        })).min(1),
+    }),
+});
+
 const profileCollection = defineCollection({
     loader: file("./src/content/profile.json"),
     schema: ({ image }) => z.object({
@@ -84,5 +100,6 @@ export const collections = {
     albums: albumsCollection,
     news: newsCollection,
     reviews: reviewsCollection,
+    compilations: compilationsCollection,
     profile: profileCollection,
 };

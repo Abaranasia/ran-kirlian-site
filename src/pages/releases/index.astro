@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import AlbumGrid from "@components/AlbumGrid.astro";
 import ReleasesLayout from "@components/ReleasesLayout.astro";
 import MainLayout from "@layouts/MainLayout.astro";
 import { siteConfig } from "@config/site-config";
@@ -17,5 +18,7 @@ const description = `All ${albums.length} releases by ${siteConfig.artistName}${
 >
   <h1 class="mt-6 mb-0 lg:mt-10">Releases</h1>
 
-  <ReleasesLayout albums={albums} />
+  <ReleasesLayout>
+    <AlbumGrid albums={albums} />
+  </ReleasesLayout>
 </MainLayout>

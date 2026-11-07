@@ -2,6 +2,11 @@
 title: "Subaquàtica II & Threniar Vish"
 date: 2010-09-01
 status: info
+videos:
+  - url: "https://www.youtube.com/watch?v=_GQVvDuucKY"
+    title: "Part 1"
+  - url: "https://www.youtube.com/watch?v=r20aRsCMFS8"
+    title: "Part 2"
 ---
 
 Two new tracks recorded live in the studio with video were shared during the summer. They are not being assigned to any specific project yet while they are several work in progress over the table. I expect to release my upcomming album before the end of the year, which also includes some similar "live in the studio" recordings. For now, just enjoy these new music.
@@ -19,8 +24,3 @@ Live version. The vocal drone comes from the MS2000, which plays a slow sequence
 It exists more versions of this track, some much larger. The drone has been used on a collaborative track entitled **Carboniferous Dawn** with [Max Corbacho](http://www.maxcorbacho.com/) for his upcomming album **Deep Time**.
 
 Jellyfish images were recorded at the Oceanogràphic aquarium in Valencia (Spain) 2 years ago with my old Sony V1, sorry for the bad quality.
-
-Watch the videos on YouTube:
-
-- [Part 1](https://www.youtube.com/watch?v=_GQVvDuucKY)
-- [Part 2](https://www.youtube.com/watch?v=r20aRsCMFS8)

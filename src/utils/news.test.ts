@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { newsYear, newsYears, sortNewsByDate } from "./news";
+import { newsYear, newsYears, sortNewsByDate, upcomingReleases } from "./news";
 import { makeNews, utcDate } from "./test-fixtures";
 
 describe("newsYear", () => {
@@ -49,5 +49,31 @@ describe("newsYears", () => {
 
     it("returns an empty list for no news", () => {
         expect(newsYears([])).toEqual([]);
+    });
+});
+
+describe("upcomingReleases", () => {
+    it("keeps only upcoming items with an expected release time", () => {
+        const upcoming = upcomingReleases([
+            makeNews({ title: "Planned", date: utcDate("2025-06-21"), status: "upcoming", expected: "2027" }),
+            // Historical "forthcoming releases" entries have no expected time and stay in the regular list.
+            makeNews({ title: "Forthcoming 2007", date: utcDate("2007-01-01"), status: "upcoming" }),
+            makeNews({ title: "Released", date: utcDate("2024-01-01"), status: "available", expected: "2024" }),
+            makeNews({ title: "Note", date: utcDate("2024-02-01"), status: "info" }),
+        ]);
+        expect(upcoming.map((item) => item.data.title)).toEqual(["Planned"]);
+    });
+
+    it("orders by date ascending, then title", () => {
+        const upcoming = upcomingReleases([
+            makeNews({ title: "Later", date: utcDate("2026-01-01"), status: "upcoming", expected: "2028" }),
+            makeNews({ title: "Beta", date: utcDate("2025-06-21"), status: "upcoming", expected: "2027" }),
+            makeNews({ title: "Alpha", date: utcDate("2025-06-21"), status: "upcoming", expected: "2027" }),
+        ]);
+        expect(upcoming.map((item) => item.data.title)).toEqual(["Alpha", "Beta", "Later"]);
+    });
+
+    it("returns an empty list when nothing is upcoming", () => {
+        expect(upcomingReleases([makeNews({ title: "Note", date: utcDate("2024-02-01") })])).toEqual([]);
     });
 });

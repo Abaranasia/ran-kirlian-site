@@ -5,13 +5,16 @@ import { siteConfig } from "@config/site-config";
 import { formatDate, isoDate } from "@utils/dates";
 import { newsStatusLabels } from "@utils/news";
 import { displayTitle } from "@utils/releases";
+import VideoEmbed from "@components/VideoEmbed.astro";
 
 interface Props {
   item: CollectionEntry<"news">;
+  headingLevel?: 2 | 3;
 }
 
-const { item } = Astro.props;
+const { item, headingLevel = 2 } = Astro.props;
 const { data } = item;
+const Heading = `h${headingLevel}` as "h2" | "h3";
 const album = data.album ? await getEntry(data.album) : undefined;
 // Items without their own cover fall back to the cover of the album they announce.
 const cover = data.cover ?? album?.data.image;
@@ -29,17 +32,39 @@ const { Content } = await render(item);
         loading="lazy"
       />
     )}
+    {!cover && data.status === "upcoming" && (
+      // Stand-in cover for announced releases whose artwork isn't ready; decorative, the title is in the heading.
+      <div
+        class="relative flex aspect-square w-48 flex-col justify-end overflow-hidden rounded-md border border-hairline-strong bg-surface bg-[radial-gradient(circle_at_70%_25%,color-mix(in_srgb,var(--color-accent)_35%,transparent)_0%,transparent_55%),radial-gradient(circle_at_20%_85%,color-mix(in_srgb,var(--color-accent)_15%,transparent)_0%,transparent_50%)] p-4"
+        aria-hidden="true"
+      >
+        <span class="absolute top-5 left-6 size-0.5 rounded-full bg-ink/70"></span>
+        <span class="absolute top-10 right-8 size-1 rounded-full bg-ink/50"></span>
+        <span class="absolute top-16 left-14 size-0.5 rounded-full bg-ink/40"></span>
+        <span class="absolute top-24 right-14 size-0.5 rounded-full bg-ink/60"></span>
+        <span class="font-display text-lg leading-tight text-ink">{data.title}</span>
+        <span class="mt-2 text-[0.65rem] tracking-[0.16em] text-accent uppercase">
+          {data.expected ? `Expected ${data.expected}` : "Coming soon"}
+        </span>
+      </div>
+    )}
   </div>
   <div class="max-w-prose">
     <header>
       <p class="my-0 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs tracking-[0.16em] uppercase">
         {data.status !== "info" && <span class="text-accent">{newsStatusLabels[data.status]}</span>}
         <time datetime={isoDate(data.date)} class="text-muted">{formatDate(data.date)}</time>
+        {data.expected && <span class="text-muted">Expected {data.expected}</span>}
       </p>
-      <h2 class="mt-3 mb-0 text-2xl leading-snug">{data.title}</h2>
+      <Heading class="mt-3 mb-0 text-2xl leading-snug">{data.title}</Heading>
       {data.artist !== siteConfig.artistName && <p class="mt-1 mb-0 text-muted">{data.artist}</p>}
     </header>
     <Content />
+    {data.videos && data.videos.length > 0 && (
+      <div class="mt-6 flex flex-col gap-6">
+        {data.videos.map((video) => <VideoEmbed url={video.url} title={video.title} poster={video.poster} />)}
+      </div>
+    )}
     {(album || data.link) && (
       <p class="mb-0 flex flex-wrap gap-3">
         {album && <a href={`/albums/${album.id}/`} class="pill pill-outline">View {displayTitle(album)}</a>}

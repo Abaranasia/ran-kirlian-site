@@ -3,6 +3,9 @@ title: "Atmosfear"
 date: 2008-08-01
 status: info
 link: "https://vimeo.com/1476605"
+videos:
+  - url: "https://vimeo.com/1476605"
+    poster: ./images/atmosfear-video.jpg
 ---
 
 Another real-time recording is now online with it's own video, this time mixing images from recording session with some infrared captures I did some time ago. Recorded on sunday, june 15 2008 at **The BlueRoom** by Ran Kirlian.
@@ -20,5 +23,3 @@ Synths:
 - Alesis Micron: filter pads
 
 - Sounds like voices, bells, storms & other strange noises added on final mix.
-
-[Ran Kirlian - Atmosfear](http://www.vimeo.com/1476605?pg=embed&sec=1476605)

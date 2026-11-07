@@ -47,8 +47,16 @@ const newsCollection = defineCollection({
         artist: z.string().default(siteConfig.artistName),
         cover: image().optional(),
         status: z.enum(["available", "upcoming", "info"]).default("info"),
+        // Free-text expected release time for upcoming items, e.g. "2027" or "Spring 2027".
+        expected: z.string().optional(),
         link: z.url().optional(),
         album: reference("albums").optional(),
+        videos: z.array(z.object({
+            url: z.url(),
+            title: z.string().optional(),
+            // Required for Vimeo (no predictable thumbnail URL); optional override for YouTube.
+            poster: image().optional(),
+        })).optional(),
     }),
 });
 

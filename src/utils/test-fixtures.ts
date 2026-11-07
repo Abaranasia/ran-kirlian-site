@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 type AlbumEntry = CollectionEntry<"albums">;
 type NewsEntry = CollectionEntry<"news">;
 type ReviewEntry = CollectionEntry<"reviews">;
+type CompilationEntry = CollectionEntry<"compilations">;
 type AlbumCover = AlbumEntry["data"]["image"];
 type AlbumTrack = AlbumEntry["data"]["tracks"][number];
 
@@ -24,7 +25,23 @@ export const makeNews = (
 export const makeReview = (data: { publication: string; date: Date }): ReviewEntry =>
     ({ id: data.publication, data }) as unknown as ReviewEntry;
 
-export const makeCover = (width: number): AlbumCover => ({ src: "/cover.jpg", width, height: width, format: "jpg" });
+export const makeCompilation = (data: {
+    title: string;
+    releaseDate: Date;
+    tracks?: CompilationEntry["data"]["tracks"];
+}): CompilationEntry => ({
+    id: data.title.toLowerCase().replace(/\s+/g, "-"),
+    collection: "compilations",
+    data: {
+        label: "Label",
+        url: "https://example.bandcamp.com/album/compilation",
+        cover: makeCover(1200),
+        tracks: [{ title: "Track" }],
+        ...data,
+    },
+});
+
+export const makeCover =(width: number): AlbumCover => ({ src: "/cover.jpg", width, height: width, format: "jpg" });
 
 export const makeTrack = (title = "Track", length = "3:00"): AlbumTrack => ({ title, length });
 

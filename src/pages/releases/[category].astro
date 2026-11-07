@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
+import AlbumGrid from "@components/AlbumGrid.astro";
 import ReleasesLayout from "@components/ReleasesLayout.astro";
 import MainLayout from "@layouts/MainLayout.astro";
 import { releaseCategories, type ReleaseCategory } from "@config/release-categories";
@@ -31,5 +32,7 @@ const description = `${category.label} by ambient musician ${siteConfig.artistNa
 <MainLayout title={pageTitle(category.label)} description={description}>
   <h1 class="mt-6 mb-0 lg:mt-10">{category.label}</h1>
 
-  <ReleasesLayout albums={albums} current={category.slug} />
+  <ReleasesLayout current={category.slug}>
+    <AlbumGrid albums={albums} />
+  </ReleasesLayout>
 </MainLayout>

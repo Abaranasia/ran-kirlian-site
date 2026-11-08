@@ -1,6 +1,6 @@
 ---
 title: "Liminal Territories"
-date: 2025-06-21
+date: 2026-11-01
 status: upcoming
 expected: "2027"
 ---

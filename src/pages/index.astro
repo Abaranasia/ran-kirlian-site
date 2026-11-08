@@ -12,7 +12,7 @@ import { toOgImage } from "@utils/og-image";
 import { artistJsonLd, websiteJsonLd } from "@utils/seo";
 import { homeLatestReleaseIds } from "@config/home";
 import { sortByReleaseDate } from "@utils/releases";
-import { sortNewsByDate } from "@utils/news";
+import { archivedNews, sortNewsByDate } from "@utils/news";
 
 const HOME_NEWS_COUNT = 5;
 
@@ -35,7 +35,8 @@ const latestReleases = homeLatestReleaseIds.map((id) => {
   }
   return album;
 });
-const latestNews = sortNewsByDate(await getCollection("news")).slice(0, HOME_NEWS_COUNT);
+// Upcoming releases live on the news page, not in the latest news.
+const latestNews = sortNewsByDate(archivedNews(await getCollection("news"))).slice(0, HOME_NEWS_COUNT);
 ---
 
 <MainLayout title={`${name} | ${tagline}`} description={description} jsonLd={jsonLd}>

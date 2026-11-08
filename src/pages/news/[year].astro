@@ -5,12 +5,13 @@ import { siteConfig } from "@config/site-config";
 import MainLayout from "@layouts/MainLayout.astro";
 import NewsItem from "@components/NewsItem.astro";
 import NewsYearNav from "@components/NewsYearNav.astro";
-import { newsYear, newsYears, sortNewsByDate } from "@utils/news";
+import { archivedNews, newsYear, newsYears, sortNewsByDate } from "@utils/news";
 import { pageTitle } from "@utils/seo";
 import { pluralize } from "@utils/text";
 
 export const getStaticPaths = (async () => {
-  const news = await getCollection("news");
+  // Upcoming releases are shown on the news index, not in the year archives.
+  const news = archivedNews(await getCollection("news"));
   const years = newsYears(news);
   return years.map((year) => ({
     params: { year: String(year) },

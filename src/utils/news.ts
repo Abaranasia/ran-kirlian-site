@@ -17,6 +17,13 @@ export const upcomingReleases = (news: NewsEntry[]): NewsEntry[] =>
         .filter((item) => item.data.status === "upcoming" && item.data.expected !== undefined)
         .sort((a, b) => a.data.date.getTime() - b.data.date.getTime() || a.data.title.localeCompare(b.data.title));
 
+// News for the archive and latest lists: everything except announced upcoming releases, which have their own
+// section on the news page.
+export const archivedNews = (news: NewsEntry[]): NewsEntry[] => {
+    const upcoming = new Set(upcomingReleases(news));
+    return news.filter((item) => !upcoming.has(item));
+};
+
 // Years with at least one news item, newest first.
 export const newsYears = (news: NewsEntry[]): number[] =>
     [...new Set(news.map(newsYear))].sort((a, b) => b - a);

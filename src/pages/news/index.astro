@@ -5,16 +5,14 @@ import NewsItem from "@components/NewsItem.astro";
 import NewsYearNav from "@components/NewsYearNav.astro";
 import { siteConfig } from "@config/site-config";
 import { pageTitle } from "@utils/seo";
-import { newsYears, sortNewsByDate, upcomingReleases } from "@utils/news";
+import { archivedNews, newsYears, sortNewsByDate, upcomingReleases } from "@utils/news";
 
 const NEWS_PAGE_SIZE = 10;
 
 const news = await getCollection("news");
 const upcoming = upcomingReleases(news);
 // Upcoming releases get their own section, so they are left out of the latest list.
-const latest = sortNewsByDate(news)
-  .filter((item) => !upcoming.includes(item))
-  .slice(0, NEWS_PAGE_SIZE);
+const latest = sortNewsByDate(archivedNews(news)).slice(0, NEWS_PAGE_SIZE);
 ---
 
 <MainLayout
@@ -34,5 +32,5 @@ const latest = sortNewsByDate(news)
     {latest.map((item) => <NewsItem item={item} />)}
   </section>
 
-  <NewsYearNav years={newsYears(news)} />
+  <NewsYearNav years={newsYears(archivedNews(news))} />
 </MainLayout>

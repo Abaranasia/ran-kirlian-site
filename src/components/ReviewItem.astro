@@ -17,7 +17,7 @@ const albumTitle = album ? displayTitle(album) : data.album.id;
 const Heading = `h${headingLevel}` as "h2" | "h3";
 const { Content } = await render(review);
 ---
-<article class="max-w-prose border-b border-hairline py-10">
+<article class="prose-links max-w-prose border-b border-hairline py-10">
   <header>
     <Heading class="mt-0 mb-2 text-2xl leading-snug">
       {showAlbum ? (

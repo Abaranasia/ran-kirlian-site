@@ -22,7 +22,7 @@ const { albums } = Astro.props;
               href={`/albums/${album.id}/`}
               class="group flex items-center gap-5 rounded-[10px] border border-hairline bg-surface p-4 text-ink hover:border-hairline-strong hover:text-ink hover:no-underline sm:p-5"
             >
-              <AlbumCover album={album} alt={title} width={280} class="w-28 shrink-0 sm:w-36" />
+              <AlbumCover album={album} alt="" width={280} class="w-28 shrink-0 sm:w-36" />
               <span class="flex flex-col gap-2">
                 <span class="eyebrow">{releaseTypeLabels[album.data.type]} &middot; {album.data.year}</span>
                 <span class="font-display text-xl leading-snug group-hover:text-accent-hover sm:text-2xl">{title}</span>

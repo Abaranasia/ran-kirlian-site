@@ -14,4 +14,4 @@ All images from NASA found at internet.
 
 Video edition & effects done with Sony Vegas.
 
-More information about my gear and more synthesizer facts can be found on my blog [Celiar Structures](http://celiar.blogspot.com/).
+More information about my gear and more synthesizer facts can be found on my blog [Celiar Structures](https://celiar.blogspot.com/).

@@ -20,5 +20,10 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // Astro inlines small scripts below this limit. Emitting every script as a file keeps the
+      // Content-Security-Policy in public/_headers free of 'unsafe-inline' for scripts.
+      assetsInlineLimit: 0,
+    },
   },
 });

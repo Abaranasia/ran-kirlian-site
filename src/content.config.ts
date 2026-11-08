@@ -88,6 +88,23 @@ const compilationsCollection = defineCollection({
     }),
 });
 
+// Albums by other artists that Ran Kirlian produced, mixed or mastered; kept apart from the releases.
+const productionsCollection = defineCollection({
+    loader: glob({ pattern: "*.md", base: "./src/content/productions" }),
+    schema: ({ image }) => z.object({
+        title: z.string(),
+        artist: z.string(),
+        label: z.string(),
+        // Year-only entries use January 1 of that year and set `yearOnly`.
+        releaseDate: z.coerce.date(),
+        yearOnly: z.boolean().default(false),
+        url: z.url(),
+        cover: image(),
+        // Credit as shown in the list, e.g. "Mixed and mastered".
+        credit: z.string(),
+    }),
+});
+
 const profileCollection = defineCollection({
     loader: file("./src/content/profile.json"),
     schema: ({ image }) => z.object({
@@ -109,5 +126,6 @@ export const collections = {
     news: newsCollection,
     reviews: reviewsCollection,
     compilations: compilationsCollection,
+    productions: productionsCollection,
     profile: profileCollection,
 };

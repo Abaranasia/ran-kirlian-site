@@ -38,14 +38,19 @@ const links = [
   },
 ];
 ---
-<nav aria-label="Release categories">
-  <ul class="flex flex-wrap gap-2 md:flex-col md:gap-1">
+<!-- Below md the pills form one horizontally scrollable row that bleeds to the screen edges;
+     the vertical padding keeps focus outlines inside the scroller. -->
+<nav aria-label="Release categories" class="-mx-4 sm:-mx-6 md:mx-0">
+  <ul
+    data-releases-nav
+    class="releases-nav flex snap-x scroll-px-4 gap-2 overflow-x-auto px-4 py-1 sm:scroll-px-6 sm:px-6 md:flex-col md:gap-1 md:overflow-visible md:p-0"
+  >
     {links.map((link) => (
-      <li class:list={["list-none ml-0 pl-0", link.separated && "md:mt-2 md:border-t md:border-hairline md:pt-3"]}>
+      <li class:list={["list-none ml-0 pl-0 shrink-0 snap-start", link.separated && "md:mt-2 md:border-t md:border-hairline md:pt-3"]}>
         <a
           href={link.href}
           aria-current={link.active ? "page" : undefined}
-          class:list={["pill w-full", link.active ? "pill-active" : "pill-quiet"]}
+          class:list={["pill w-full whitespace-nowrap md:whitespace-normal", link.active ? "pill-active" : "pill-quiet"]}
         >
           <span class="flex-1 text-left">{link.label}</span>
           <span class:list={["text-xs tabular-nums", link.active ? "text-accent" : "text-muted"]}>{link.count}</span>
@@ -54,3 +59,29 @@ const links = [
     ))}
   </ul>
 </nav>
+
+<style>
+  /* The cut-off pill at the edge already signals the scroller, so its scrollbar is hidden. */
+  .releases-nav {
+    scrollbar-width: none;
+  }
+
+  .releases-nav::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+
+<script>
+  // On narrow screens the active pill can start off-screen, so scroll it into view.
+  const revealActivePill = () => {
+    const nav = document.querySelector<HTMLElement>("[data-releases-nav]");
+    const active = nav?.querySelector<HTMLElement>("[aria-current='page']");
+    if (!nav || !active || nav.scrollWidth <= nav.clientWidth) return;
+    const navBox = nav.getBoundingClientRect();
+    const pillBox = active.getBoundingClientRect();
+    // Center the active pill within the scroller.
+    nav.scrollLeft += pillBox.left - navBox.left - (navBox.width - pillBox.width) / 2;
+  };
+
+  document.addEventListener("astro:page-load", revealActivePill);
+</script>

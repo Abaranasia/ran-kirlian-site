@@ -8,4 +8,4 @@ album: continuum
 
 Continuum marks the return of Ran Kirlian to space ambient atmospheres and ethereal soundscapes, collecting music recorded from 2005 to 2010 and mixed in 2011.
 
-[Ran Kirlian - Continuum](http://soundcloud.com/ran-kirlian/sets/ran-kirlian-continuum) by [Ran Kirlian](http://soundcloud.com/ran-kirlian)
+[Ran Kirlian - Continuum](https://soundcloud.com/ran-kirlian/sets/ran-kirlian-continuum) by [Ran Kirlian](https://soundcloud.com/ran-kirlian)

@@ -71,7 +71,8 @@ const imageClass = "size-full object-cover opacity-90 transition-opacity group-h
     const iframe = document.createElement("iframe");
     iframe.src = embedUrl;
     iframe.title = facade.dataset.videoTitle ?? "Video";
-    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture";
+    iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+    iframe.referrerPolicy = "strict-origin-when-cross-origin";
     iframe.allowFullscreen = true;
     iframe.className = "block aspect-video w-full rounded-md border-0 bg-surface";
     facade.replaceWith(iframe);

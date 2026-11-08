@@ -2,6 +2,7 @@ import { defineCollection, reference } from "astro:content";
 import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { siteConfig } from "@config/site-config";
+import { httpUrl } from "@utils/schema";
 
 const trackLengthRegex = /^\d{1,3}:\d{2}$/;
 
@@ -14,7 +15,7 @@ const albumsCollection = defineCollection({
         year: z.number(),
         releaseDate: z.coerce.date().optional(),
         duration: z.string().regex(trackLengthRegex),
-        bandcampUrl: z.url(),
+        bandcampUrl: httpUrl(),
         // The Content Layer resolves images after schema validation, so the
         // minimum cover width is enforced in src/pages/albums/[slug].astro.
         image: image(),
@@ -49,10 +50,10 @@ const newsCollection = defineCollection({
         status: z.enum(["available", "upcoming", "info"]).default("info"),
         // Free-text expected release time for upcoming items, e.g. "2027" or "Spring 2027".
         expected: z.string().optional(),
-        link: z.url().optional(),
+        link: httpUrl().optional(),
         album: reference("albums").optional(),
         videos: z.array(z.object({
-            url: z.url(),
+            url: httpUrl(),
             title: z.string().optional(),
             // Required for Vimeo (no predictable thumbnail URL); optional override for YouTube.
             poster: image().optional(),
@@ -67,7 +68,7 @@ const reviewsCollection = defineCollection({
         publication: z.string(),
         reviewer: z.string().optional(),
         date: z.coerce.date(),
-        sourceUrl: z.url().optional(),
+        sourceUrl: httpUrl().optional(),
         excerpt: z.string().optional(),
     }),
 });
@@ -79,7 +80,7 @@ const compilationsCollection = defineCollection({
         title: z.string(),
         label: z.string(),
         releaseDate: z.coerce.date(),
-        url: z.url(),
+        url: httpUrl(),
         cover: image(),
         tracks: z.array(z.object({
             title: z.string(),
@@ -98,7 +99,7 @@ const productionsCollection = defineCollection({
         // Year-only entries use January 1 of that year and set `yearOnly`.
         releaseDate: z.coerce.date(),
         yearOnly: z.boolean().default(false),
-        url: z.url(),
+        url: httpUrl(),
         cover: image(),
         // Credit as shown in the list, e.g. "Mixed and mastered".
         credit: z.string(),
@@ -115,9 +116,9 @@ const profileCollection = defineCollection({
         email: z.email(),
         socials: z.array(z.object({
             name: z.string(),
-            url: z.url(),
+            url: httpUrl(),
         })),
-        bandcampUrl: z.url(),
+        bandcampUrl: httpUrl(),
     }),
 });
 

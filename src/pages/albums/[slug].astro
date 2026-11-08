@@ -73,7 +73,7 @@ const jsonLd = [
     <div class="mt-6 grid items-center gap-10 md:grid-cols-[minmax(0,26rem)_1fr] md:gap-14">
         <AlbumCover
             album={album}
-            alt={title}
+            alt=""
             width={600}
             quality="high"
             transitionName={`${album.id}-image`}
@@ -95,7 +95,7 @@ const jsonLd = [
 
     <!-- Album Contents -->
     <div class="mt-16 grid gap-10 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-16">
-        <div class="max-w-prose [&>*:first-child]:mt-0">
+        <div class="prose-links max-w-prose [&>*:first-child]:mt-0">
             <Content />
         </div>
         <div>

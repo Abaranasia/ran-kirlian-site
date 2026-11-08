@@ -94,6 +94,20 @@
   @apply text-muted hover:bg-surface hover:text-ink;
 }
 
+/* Links inside running text (paragraphs and list items) stay underlined so they are not
+   identified by color alone; pills, cards and headings keep their own styling. */
+@utility prose-links {
+  & :where(p, li) a:not(.pill) {
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in oklab, var(--color-accent) 45%, transparent);
+    text-underline-offset: 0.2em;
+  }
+
+  & :where(p, li) a:not(.pill):hover {
+    text-decoration-color: currentColor;
+  }
+}
+
 /* Small uppercase, wide-tracked label above titles. */
 @utility eyebrow {
   @apply font-display text-xs tracking-[0.24em] text-accent uppercase;

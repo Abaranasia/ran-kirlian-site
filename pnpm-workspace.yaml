@@ -1,0 +1,7 @@
+# Security overrides for transitive dependencies flagged by `pnpm audit`.
+# Each entry only rewrites the vulnerable range, so unaffected versions stay untouched.
+overrides:
+  "mdast-util-to-hast@>=13.0.0 <13.2.1": ^13.2.1
+  "source-map-js@>=1.0.0 <1.2.2": ^1.2.2
+  "fast-uri@>=3.0.0 <3.1.9": ^3.1.9
+  "ajv@>=7.0.0-alpha.0 <8.18.0": ^8.18.0

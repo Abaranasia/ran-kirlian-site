@@ -1,12 +1,12 @@
 # Security headers in the Netlify / Cloudflare Pages `_headers` format.
 # The CSP mirrors what dist/ loads: scripts are all emitted as files under /_astro/
 # (vite.build.assetsInlineLimit: 0 in astro.config.mjs), inline <style> blocks come from
-# view transitions, fonts come from Google Fonts, video posters from i.ytimg.com and the
-# click-to-play players from youtube-nocookie.com and player.vimeo.com.
+# view transitions and the self-hosted @font-face rules, font files are served from
+# /_astro/fonts/, video posters come from i.ytimg.com and the click-to-play players from youtube-nocookie.com and player.vimeo.com.
 /*
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   X-Frame-Options: DENY
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://i.ytimg.com; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' https://i.ytimg.com; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests

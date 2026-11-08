@@ -11,14 +11,20 @@
   --color-accent: #7fb8c9;
   --color-accent-hover: #a9d3e0;
 
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* Self-hosted families from the `fonts` config in astro.config.mjs, fallbacks included. */
+  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-inter);
 }
 
 @layer base {
   html {
     @apply bg-ground font-sans text-ink antialiased;
-    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   body {

@@ -43,7 +43,8 @@ const previewAlt = image ? imageAlt ?? title : `Portrait of ${profile.data.name}
 <meta property="og:type" content={type}>
 <meta property="og:title" content={title}>
 <meta property="og:description" content={description}>
-<meta property="og:url" content={canonical}>
+{/* Noindex pages (e.g. 404.html) have no canonical address, so they get no og:url either. */}
+{!noindex && <meta property="og:url" content={canonical}>}
 {preview && (
   <>
     <meta property="og:image" content={preview.url}>

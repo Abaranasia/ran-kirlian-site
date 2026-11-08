@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { newsYear, newsYears, sortNewsByDate, upcomingReleases } from "./news";
+import { archivedNews, newsYear, newsYears, sortNewsByDate, upcomingReleases } from "./news";
 import { makeNews, utcDate } from "./test-fixtures";
 
 describe("newsYear", () => {
@@ -75,5 +75,23 @@ describe("upcomingReleases", () => {
 
     it("returns an empty list when nothing is upcoming", () => {
         expect(upcomingReleases([makeNews({ title: "Note", date: utcDate("2024-02-01") })])).toEqual([]);
+    });
+});
+
+describe("archivedNews", () => {
+    it("leaves out announced upcoming releases, which have their own section", () => {
+        const archived = archivedNews([
+            makeNews({ title: "Planned", date: utcDate("2025-11-11"), status: "upcoming", expected: "2027" }),
+            makeNews({ title: "Released", date: utcDate("2025-03-01"), status: "available" }),
+            makeNews({ title: "Note", date: utcDate("2025-01-01") }),
+        ]);
+        expect(archived.map((item) => item.data.title)).toEqual(["Released", "Note"]);
+    });
+
+    it("keeps historical upcoming items that have no expected release time", () => {
+        const archived = archivedNews([
+            makeNews({ title: "Forthcoming 2007", date: utcDate("2007-01-01"), status: "upcoming" }),
+        ]);
+        expect(archived.map((item) => item.data.title)).toEqual(["Forthcoming 2007"]);
     });
 });

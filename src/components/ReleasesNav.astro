@@ -3,13 +3,14 @@ import { getCollection } from "astro:content";
 import { releaseCategories } from "@config/release-categories";
 
 interface Props {
-  // Active category slug, or "compilations"; undefined means "All releases".
+  // Active category slug, "compilations" or "productions"; undefined means "All releases".
   current?: string;
 }
 
 const { current } = Astro.props;
 const albums = await getCollection("albums");
 const compilations = await getCollection("compilations");
+const productions = await getCollection("productions");
 
 const links = [
   { href: "/releases/", label: "All releases", count: albums.length, active: current === undefined, separated: false },
@@ -20,13 +21,20 @@ const links = [
     active: current === category.slug,
     separated: false,
   })),
-  // Compilations are not releases, so they sit apart from the release categories.
+  // Compilations and productions are not releases, so they sit apart from the release categories.
   {
     href: "/releases/compilations/",
     label: "Compilations",
     count: compilations.length,
     active: current === "compilations",
     separated: true,
+  },
+  {
+    href: "/releases/productions/",
+    label: "Production & Mastering",
+    count: productions.length,
+    active: current === "productions",
+    separated: false,
   },
 ];
 ---

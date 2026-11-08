@@ -4,6 +4,7 @@ type AlbumEntry = CollectionEntry<"albums">;
 type NewsEntry = CollectionEntry<"news">;
 type ReviewEntry = CollectionEntry<"reviews">;
 type CompilationEntry = CollectionEntry<"compilations">;
+type ProductionEntry = CollectionEntry<"productions">;
 type AlbumCover = AlbumEntry["data"]["image"];
 type AlbumTrack = AlbumEntry["data"]["tracks"][number];
 
@@ -37,6 +38,24 @@ export const makeCompilation = (data: {
         url: "https://example.bandcamp.com/album/compilation",
         cover: makeCover(1200),
         tracks: [{ title: "Track" }],
+        ...data,
+    },
+});
+
+export const makeProduction = (data: {
+    title: string;
+    releaseDate: Date;
+    yearOnly?: boolean;
+}): ProductionEntry => ({
+    id: data.title.toLowerCase().replace(/\s+/g, "-"),
+    collection: "productions",
+    data: {
+        artist: "Artist",
+        label: "Label",
+        url: "https://example.bandcamp.com/album/production",
+        cover: makeCover(1200),
+        credit: "Mastered",
+        yearOnly: false,
         ...data,
     },
 });
